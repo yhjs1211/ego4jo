@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CreateCardDTO } from './DTO/create.DTO';
+import { UpdateCardDTO } from './DTO/update.DTO';
 
 @Injectable()
 export class CardRepository {
@@ -26,5 +27,11 @@ export class CardRepository {
 
     const createdCard = await this.cardRepository.save(card);
     return createdCard;
+  }
+
+  async updateCard(card: Card, data: UpdateCardDTO): Promise<number> {
+    const result = await this.cardRepository.update({ id: card.id }, data);
+
+    return result.affected;
   }
 }

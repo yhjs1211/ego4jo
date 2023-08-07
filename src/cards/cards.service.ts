@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CardRepository } from './card.repository';
 import { CreateCardDTO } from './DTO/create.DTO';
+import { UpdateCardDTO } from './DTO/update.DTO';
 
 @Injectable()
 export class CardsService {
@@ -12,5 +13,14 @@ export class CardsService {
 
   createCard(data: CreateCardDTO) {
     return this.cardRepository.createCard(data);
+  }
+
+  async updateCard(data: UpdateCardDTO, id: number): Promise<number> {
+    const card = await this.cardRepository.findOneById(id);
+    if (card) {
+      return await this.cardRepository.updateCard(card, data);
+    } else {
+      throw new NotFoundException(`${id} as cardId didn't exist in Database`);
+    }
   }
 }
