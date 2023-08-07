@@ -7,6 +7,8 @@
 
 # ERD
 
-<img width="766" alt="image" src="https://github.com/yhjs1211/ego4jo/assets/122883378/ca7925db-8260-4347-917f-d71c44f56d89">
+<p align="center">
+  <img width="766" alt="image" src="https://github.com/yhjs1211/ego4jo/assets/122883378/ca7925db-8260-4347-917f-d71c44f56d89">
+</p>
 
 # API
