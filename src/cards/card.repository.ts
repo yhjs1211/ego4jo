@@ -34,4 +34,10 @@ export class CardRepository {
 
     return result.affected;
   }
+
+  async deleteCard(id: number): Promise<number> {
+    const result = await this.cardRepository.delete({ id });
+
+    return result.affected;
+  }
 }

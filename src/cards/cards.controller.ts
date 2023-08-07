@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -29,6 +30,7 @@ export class CardsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Card> {
     const result = await this.cardService.getCardDetailById(id);
+    if (!result) throw new NotFoundException('There is no Card in Database');
 
     return result;
   }
@@ -66,7 +68,7 @@ export class CardsController {
       res.status(204).end();
     } else {
       res.status(400).json({
-        message: '업데이트 실패',
+        message: '카드 업데이트 실패',
       });
     }
   }
@@ -79,7 +81,17 @@ export class CardsController {
     status: 204,
     description: 'No Content',
   })
-  async deleteCard(@Param('id', ParseIntPipe) id: number) {
-    return;
+  async deleteCard(
+    @Param('id', ParseIntPipe) id: number,
+    @Res() res: Response,
+  ) {
+    const result = await this.cardService.deleteCard(id);
+    if (result) {
+      res.status(204).end();
+    } else {
+      res.status(400).json({
+        message: '카드 삭제 실패',
+      });
+    }
   }
 }
