@@ -7,12 +7,14 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCardDTO } from './DTO/create.DTO';
 import { Card } from './card.entity';
 import { UpdateCardDTO } from './DTO/update.DTO';
+import { Response } from 'express';
 
 @ApiTags('cards')
 @Controller('cards')
@@ -57,8 +59,16 @@ export class CardsController {
   async updateCard(
     @Body() body: UpdateCardDTO,
     @Param('id', ParseIntPipe) id: number,
+    @Res() res: Response,
   ) {
-    return;
+    const result = await this.cardService.updateCard(body, id);
+    if (result) {
+      res.status(204).end();
+    } else {
+      res.status(400).json({
+        message: '업데이트 실패',
+      });
+    }
   }
 
   @Delete(':id')
