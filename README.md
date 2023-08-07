@@ -15,3 +15,30 @@
 <hr>
 <h1 align="center">API</h1>
 <hr>
+<ul>
+  <li>
+    <h4>Card</h4>
+    <ul>
+      <li>
+        <p>GET '/cards/:id' - getCardDetailById</p>
+      </li>
+      <li>
+        <p>POST '/cards' - createCard</p>
+      </li>
+      <li>
+        <p>PUT '/cards/:id' - updateCard</p>
+      </li>
+      <li>
+        <p>DELETE '/cards/:id' - deleteCard</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h4>Comment</h4>
+    <ul>
+      <li>
+        <p>GET '/comments' - getCommentsByCardId</p>
+      </li>
+    </ul>
+  </li>
+</ul>
