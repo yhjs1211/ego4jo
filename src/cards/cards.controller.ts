@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCardDTO } from './DTO/create.DTO';
 import { Card } from './card.entity';
 import { UpdateCardDTO } from './DTO/update.DTO';
