@@ -3,19 +3,18 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   NotFoundException,
   Param,
   ParseIntPipe,
   Post,
   Put,
-  Res,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCardDTO } from './DTO/create.DTO';
 import { Card } from './card.entity';
 import { UpdateCardDTO } from './DTO/update.DTO';
-import { Response } from 'express';
 
 @ApiTags('cards')
 @Controller('cards')
@@ -36,6 +35,7 @@ export class CardsController {
   }
 
   @Post()
+  @HttpCode(201)
   @ApiOperation({ summary: 'Create Card' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({
@@ -50,6 +50,7 @@ export class CardsController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   @ApiOperation({ summary: 'Update Card' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -61,19 +62,13 @@ export class CardsController {
   async updateCard(
     @Body() body: UpdateCardDTO,
     @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response,
   ) {
-    const result = await this.cardService.updateCard(body, id);
-    if (result) {
-      res.status(204).end();
-    } else {
-      res.status(400).json({
-        message: '카드 업데이트 실패',
-      });
-    }
+    await this.cardService.updateCard(body, id);
+    return;
   }
 
   @Delete(':id')
+  @HttpCode(204)
   @ApiOperation({ summary: 'Delete Card' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
@@ -81,17 +76,8 @@ export class CardsController {
     status: 204,
     description: 'No Content',
   })
-  async deleteCard(
-    @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response,
-  ) {
-    const result = await this.cardService.deleteCard(id);
-    if (result) {
-      res.status(204).end();
-    } else {
-      res.status(400).json({
-        message: '카드 삭제 실패',
-      });
-    }
+  async deleteCard(@Param('id', ParseIntPipe) id: number) {
+    await this.cardService.deleteCard(id);
+    return;
   }
 }
