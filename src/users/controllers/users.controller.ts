@@ -3,13 +3,15 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   UseFilters,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserRequestDto } from '../dto/users.request.dto';
+import { UserCreateDto } from '../dto/users.create.dto';
+import { UserUpdateDto } from '../dto/users.update.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
@@ -28,22 +30,36 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
+  // POST. http://localhost:8000/users
   @ApiOperation({ summary: 'sign-up' })
   @Post()
-  async singUp(@Body() body: UserRequestDto) {
+  async signUp(@Body() body: UserCreateDto) {
     return await this.usersSevice.signUp(body);
   }
 
+  // POST. http://localhost:8000/users/login
   @ApiOperation({ summary: 'log-in' })
   @Post('login')
   logIn(@Body() body: LoginRequestDto) {
     return this.authService.jwtLogIn(body);
   }
 
+  // GET. http://localhost:8000/users
   @ApiOperation({ summary: 'get current user' })
   @UseGuards(JwtAuthGuard)
   @Get()
-  getCurrentCat(@CurrentUser() user: Users) {
+  getCurrentUser(@CurrentUser() user: Users) {
     return user;
+  }
+
+  // PUT. http://localhost:8000/users
+  @ApiOperation({ summary: 'update current user infomation' })
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateCurrentUser(
+    @CurrentUser() user: Users,
+    @Body() body: UserUpdateDto,
+  ) {
+    return await this.usersSevice.updateUser(user.id, body);
   }
 }
