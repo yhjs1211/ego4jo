@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Put,
+  UploadedFiles,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -19,6 +21,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { Users } from '../users.entity';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/common/utils/multer.options';
 
 @ApiTags('users')
 @Controller('users')
@@ -61,5 +65,26 @@ export class UsersController {
     @Body() body: UserUpdateDto,
   ) {
     return await this.usersSevice.updateUser(user.id, body);
+  }
+
+  // POST. http://localhost:8000/users/upload
+  @ApiOperation({ summary: 'upload user profile image' })
+  @UseInterceptors(FilesInterceptor('image', 10, multerOptions('users')))
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  uploadCatImage(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @CurrentUser() user: Users,
+  ) {
+    console.log(files);
+    return this.usersSevice.uploadImage(user, files);
+  }
+
+  // DELETE. http://localhost:8000/users
+  @ApiOperation({ summary: 'delete current user' })
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async deleteCurrentUser(@CurrentUser() user: Users) {
+    return await this.usersSevice.deleteUser(user.id);
   }
 }

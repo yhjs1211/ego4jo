@@ -30,8 +30,20 @@ export class UsersRepository {
     return user;
   }
 
-  async updateUser(user: Users, data: UserUpdateDto) {
+  async updateUser(user: Users, data: UserUpdateDto): Promise<object> {
     const result = await this.usersRepository.update({ id: user.id }, data);
+    return result;
+  }
+
+  async findByIdAndUpdateImage(id: number, fileName: string): Promise<string> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    user.imgUrl = `http://localhost:8000/media/${fileName}`;
+    const newUser = await this.usersRepository.save(user);
+    return newUser.imgUrl;
+  }
+
+  async deleteUser(id: number): Promise<object> {
+    const result = await this.usersRepository.delete({ id: id });
     return result;
   }
 }
