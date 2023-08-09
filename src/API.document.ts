@@ -6,16 +6,16 @@ class SwaggerDocument {
 
   public build() {
     this.config = new DocumentBuilder()
-      .setTitle('Cat Project')
-      .setDescription('The cats API description')
+      .setTitle('The Trello Project')
+      .setDescription('The Trello Projecte API description')
       .setVersion('1.0')
-      .addTag('cat')
+      .addTag('Trello')
       .build();
   }
 
   public swaggerSetUp(app: INestApplication) {
     const document = SwaggerModule.createDocument(app, this.config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('doc', app, document);
   }
 }
 
