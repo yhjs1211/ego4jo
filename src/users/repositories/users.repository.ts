@@ -20,4 +20,12 @@ export class UsersRepository {
     const newUser = this.usersRepository.create(user);
     return await this.usersRepository.save(newUser);
   }
+
+  async findUserById(id: number): Promise<Users | null> {
+    const user = await this.usersRepository.findOne({
+      where: { id, deletedAt: null },
+      select: ['email', 'name', 'imgUrl'],
+    });
+    return user;
+  }
 }
