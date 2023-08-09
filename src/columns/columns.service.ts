@@ -8,7 +8,7 @@ export class ColumnsService {
   async getColumns() {
     return await this.columnsRepository.find({
       where: { deletedAt: null },
-      select: ['title', 'boardId'],
+      select: ['id', 'title', 'boardId', 'columnNumber'],
     });
   }
 
