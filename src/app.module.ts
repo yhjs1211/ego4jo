@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { CardsModule } from './cards/cards.module';
 import { CommentsModule } from './comments/comments.module';
+import { Users } from './users/users.entity';
 import { Card } from './cards/card.entity';
 import { Comment } from './comments/comment.entity';
 
@@ -19,7 +20,7 @@ import { Comment } from './comments/comment.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Card, Comment],
+      entities: [Users, Card, Comment],
       synchronize: true,
     }),
     UsersModule,
