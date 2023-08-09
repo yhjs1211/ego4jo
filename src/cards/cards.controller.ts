@@ -9,12 +9,14 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Res,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCardDTO } from './DTO/create.DTO';
 import { Card } from './card.entity';
 import { UpdateCardDTO } from './DTO/update.DTO';
+import { Response } from 'express';
 
 @ApiTags('cards')
 @Controller('cards')
@@ -62,6 +64,7 @@ export class CardsController {
   async updateCard(
     @Body() body: UpdateCardDTO,
     @Param('id', ParseIntPipe) id: number,
+    @Res() res: Response,
   ) {
     await this.cardService.updateCard(body, id);
     return;

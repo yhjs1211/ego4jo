@@ -26,12 +26,13 @@ export class CardRepository extends Repository<Card> {
   }
 
   async updateCard(card: Card, data: UpdateCardDTO): Promise<number> {
-    const result = await this.update({ id: card.id }, data);
+    const result = await this.cardRepository.update({ id: card.id }, data);
+
     return result.affected;
   }
 
   async deleteCard(id: number): Promise<number> {
-    const result = await this.delete({ id });
+    const result = await this.cardRepository.delete({ id });
 
     return result.affected;
   }
