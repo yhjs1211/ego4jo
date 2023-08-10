@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Comment } from 'src/comments/comment.entity';
+import { Users } from 'src/users/users.entity';
 import {
   Column,
   Entity,
@@ -67,6 +68,6 @@ export class Card {
   comments: Comment[];
 
   // Bi-directional relations
-  // @ManyToMany(()=> User, (user) => user.cards)
-  // workers: User[]
+  @ManyToMany(() => Users, (user) => user.cards)
+  workers: Users[];
 }
