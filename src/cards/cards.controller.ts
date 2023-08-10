@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -29,11 +31,13 @@ export class CardsController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Card> {
     const result = await this.cardService.getCardDetailById(id);
+    if (!result) throw new NotFoundException('There is no Card in Database');
 
     return result;
   }
 
   @Post()
+  @HttpCode(201)
   @ApiOperation({ summary: 'Create Card' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({
@@ -48,6 +52,7 @@ export class CardsController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   @ApiOperation({ summary: 'Update Card' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -61,17 +66,12 @@ export class CardsController {
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
   ) {
-    const result = await this.cardService.updateCard(body, id);
-    if (result) {
-      res.status(204).end();
-    } else {
-      res.status(400).json({
-        message: '업데이트 실패',
-      });
-    }
+    await this.cardService.updateCard(body, id);
+    return;
   }
 
   @Delete(':id')
+  @HttpCode(204)
   @ApiOperation({ summary: 'Delete Card' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
@@ -80,6 +80,7 @@ export class CardsController {
     description: 'No Content',
   })
   async deleteCard(@Param('id', ParseIntPipe) id: number) {
+    await this.cardService.deleteCard(id);
     return;
   }
 }

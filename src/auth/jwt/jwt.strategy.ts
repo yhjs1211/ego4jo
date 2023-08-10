@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.usersRepository.findUserById(payload.id);
 
     if (user) {
-      return user; // req.user
+      return user; // request.user
     } else {
       throw new UnauthorizedException('접근 오류');
     }

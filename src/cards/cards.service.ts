@@ -23,4 +23,13 @@ export class CardsService {
       throw new NotFoundException(`${id} as cardId didn't exist in Database`);
     }
   }
+
+  async deleteCard(id: number): Promise<number> {
+    const card = await this.cardRepository.findOneById(id);
+    if (card) {
+      return await this.cardRepository.deleteCard(card.id);
+    } else {
+      throw new NotFoundException(`${id} as cardId didn't exist in Database`);
+    }
+  }
 }
