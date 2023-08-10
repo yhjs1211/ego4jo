@@ -11,6 +11,7 @@ import { Users } from './users/users.entity';
 import { Card } from './cards/card.entity';
 import { Comment } from './comments/comment.entity';
 import { Columns } from './columns/columns.entity';
+import { AwsService } from './aws.service';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { Columns } from './columns/columns.entity';
     ColumnsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AwsService],
 })
 export class AppModule {}
