@@ -22,25 +22,18 @@ export class ColumnsController {
   }
 
   @Post()
-  createColumns(@Body() data: CreateColumnsDto) {
-    return this.columnsService.createColumns(
-      data.title,
-      data.boardId,
-      data.columnNumber,
-    );
+  createColumns(@Body() body: CreateColumnsDto) {
+    const result = this.columnsService.createColumns(body);
+    return result;
   }
 
   @Put('/:id')
   async upddateColumns(
     @Param('id') columnsId: number,
-    @Body() data: UpdateColumnsDto,
+    @Body() body: UpdateColumnsDto,
   ) {
-    return await this.columnsService.updateColumns(
-      columnsId,
-      data.title,
-      data.boardId,
-      data.columnNumber,
-    );
+    const result = this.columnsService.updateColumns(columnsId, body);
+    return result;
   }
 
   @Delete('/:id')

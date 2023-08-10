@@ -1,6 +1,4 @@
 import { PickType } from '@nestjs/mapped-types';
-import { CreateColumnsDto } from './create-columns.dto';
+import { Columns } from '../columns.entity';
 
-export class DeleteColumnsDto extends PickType(CreateColumnsDto, [
-  'boardId',
-] as const) {}
+export class DeleteColumnsDto extends PickType(Columns, ['id'] as const) {}
