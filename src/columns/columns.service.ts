@@ -20,7 +20,7 @@ export class ColumnsService {
   }
 
   async updateColumns(id: number, data: UpdateColumnsDto) {
-    const columns = await this.columnsRepository.findOneById(id);
+    const columns = await this.columnsRepository.findOneBy({ id });
     if (!columns) {
       throw new NotFoundException(`${id} as columsId didn't exist in Database`);
     }
