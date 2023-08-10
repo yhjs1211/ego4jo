@@ -1,13 +1,8 @@
-import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
+import { PickType } from '@nestjs/mapped-types';
+import { Columns } from '../columns.entity';
 
-export class CreateColumnsDto {
-  @IsString()
-  @IsNotEmpty()
-  title: string;
-
-  @IsNumber()
-  boardId: number;
-
-  @IsNumber()
-  columnNumber: number;
-}
+export class CreateColumnsDto extends PickType(Columns, [
+  'title',
+  'boardId',
+  'columnNumber',
+] as const) {}
