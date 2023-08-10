@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: Payload) {
-    const user = await this.usersRepository.findUserById(payload.id);
+    const user = await this.usersRepository.findUserByIdWithoutPassword(payload.id);
 
     if (user) {
       return user; // request.user
