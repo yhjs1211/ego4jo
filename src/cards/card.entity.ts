@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Columns } from 'src/columns/columns.entity';
 import { Comment } from 'src/comments/comment.entity';
 import { Users } from 'src/users/users.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -32,6 +34,7 @@ export class Card {
   })
   @Column({
     type: 'text',
+    nullable: true,
   })
   description: string;
 
@@ -41,6 +44,7 @@ export class Card {
   })
   @Column({
     type: 'date',
+    nullable: true,
   })
   deadline: string;
 
@@ -51,6 +55,7 @@ export class Card {
   @Column({
     type: 'varchar',
     length: 30,
+    nullable: true,
   })
   color: string;
 
@@ -61,8 +66,12 @@ export class Card {
   @Column()
   cardNum: number;
 
-  // @ManyToOne(() => Column, (column) => column.cards)
-  // column: Column
+  @Column()
+  columnId: number;
+
+  @ManyToOne(() => Columns, (column) => column.cards)
+  @JoinColumn({ name: 'columnId', referencedColumnName: 'id' })
+  column: Columns;
 
   @OneToMany(() => Comment, (comment) => comment.card)
   comments: Comment[];
