@@ -40,11 +40,16 @@ export class UsersRepository extends Repository<Users> {
     return result;
   }
 
-  async findByIdAndUpdateImage(id: number, fileName: string): Promise<string> {
+  async findByIdAndUpdateImage(id: number, key: string): Promise<string> {
     const user = await this.findOne({ where: { id } });
-    user.imgUrl = `http://localhost:8000/media/${fileName}`;
+    user.imgUrl = key;
     const newUser = await this.save(user);
     return newUser.imgUrl;
+  }
+
+  async getUserImageUrl(id: number): Promise<string> {
+    const user = await this.findOne({ where: { id } });
+    return user.imgUrl;
   }
 
   async deleteUser(id: number): Promise<object> {
