@@ -5,7 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
+// import { Card } from 'src/cards/card.entity';
+// import { Board } from 'src/board/board.entity';
 
 @Entity()
 export class Columns {
@@ -29,4 +33,10 @@ export class Columns {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  // @OneToMany(() => Card, (card) => card.columns, { nullable: true })
+  // card: Card[];
+
+  // @ManyToOne(()=> Broad, (board)=> board.columns, { onDelete: 'SET NULL'})
+  // board: Board;
 }
