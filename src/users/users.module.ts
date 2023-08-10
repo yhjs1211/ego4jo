@@ -6,17 +6,21 @@ import { Users } from './users.entity';
 import { UsersRepository } from './repositories/users.repository';
 import { AuthModule } from 'src/auth/auth.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AwsService } from 'src/aws.service';
+import { ConfigModule } from '@nestjs/config';
+import * as multer from 'multer';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MulterModule.register({
-      dest: './upload',
+      storage: multer.memoryStorage(),
     }),
     TypeOrmModule.forFeature([Users]),
     forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersService, UsersRepository, AwsService],
   exports: [UsersService, UsersRepository],
 })
 export class UsersModule {}

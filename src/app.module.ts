@@ -9,6 +9,7 @@ import { CommentsModule } from './comments/comments.module';
 import { Users } from './users/users.entity';
 import { Card } from './cards/card.entity';
 import { Comment } from './comments/comment.entity';
+import { AwsService } from './aws.service';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { Comment } from './comments/comment.entity';
     CommentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AwsService],
 })
 export class AppModule {}
