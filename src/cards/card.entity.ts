@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Comment } from 'src/comments/comment.entity';
+import { Users } from 'src/users/users.entity';
 import {
   Column,
   Entity,
@@ -12,8 +13,8 @@ import {
 @Entity()
 export class Card {
   @ApiProperty({
-    required: true,
-    description: 'Auto-Increment filed by Card id',
+    required: false,
+    description: 'Auto-Increment column by Card id',
   })
   @PrimaryGeneratedColumn()
   id: number;
@@ -26,7 +27,7 @@ export class Card {
   title: string;
 
   @ApiProperty({
-    required: true,
+    required: false,
     description: 'Please input what to do.',
   })
   @Column({
@@ -35,8 +36,8 @@ export class Card {
   description: string;
 
   @ApiProperty({
-    required: true,
-    description: 'This job will be finished before deadline.',
+    required: false,
+    description: 'This job will have to be finished before deadline.',
   })
   @Column({
     type: 'date',
@@ -44,7 +45,7 @@ export class Card {
   deadline: string;
 
   @ApiProperty({
-    required: true,
+    required: false,
     description: 'Background color on card',
   })
   @Column({
@@ -54,8 +55,8 @@ export class Card {
   color: string;
 
   @ApiProperty({
-    required: true,
-    description: 'The number in Column',
+    required: false,
+    description: 'The number in Column will be given by Service Logic',
   })
   @Column()
   cardNum: number;
@@ -67,6 +68,6 @@ export class Card {
   comments: Comment[];
 
   // Bi-directional relations
-  // @ManyToMany(()=> User, (user) => user.cards)
-  // workers: User[]
+  @ManyToMany(() => Users, (user) => user.cards)
+  workers: Users[];
 }
