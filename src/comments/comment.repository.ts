@@ -11,14 +11,15 @@ export class CommentRepository extends Repository<Comment> {
     super(Comment, dataSource.createEntityManager());
   }
 
-  async findAllByCard(card: Card) {
-    const comments = await this.find({ where: { card } });
+  async findAllByCard(cardId: number) {
+    const comments = await this.find({ where: { cardId } });
     return comments;
   }
 
-  async createComment(card: Card, data: CreateCommentDTO) {
+  async createComment(cardId: number, data: CreateCommentDTO) {
     const comment = this.create(data);
-    comment.card = card;
+    this.merge(comment, { cardId });
+
     await this.save(comment);
     return comment;
   }

@@ -12,21 +12,11 @@ export class CommentsService {
   ) {}
 
   async getAllCommentsByCardId(cardId: number) {
-    const card = await this.cardRepository.findOneById(cardId);
-    if (card) {
-      return this.commentRepository.findAllByCard(card);
-    } else {
-      throw new NotFoundException('There is no Card in DB');
-    }
+    return this.commentRepository.findAllByCard(cardId);
   }
 
   async createCommentByCardId(cardId: number, data: CreateCommentDTO) {
-    const card = await this.cardRepository.findOneById(cardId);
-    if (card) {
-      return this.commentRepository.createComment(card, data);
-    } else {
-      throw new NotFoundException('There is no Card in DB');
-    }
+    return this.commentRepository.createComment(cardId, data);
   }
 
   updateCommentById(commentId: number, data: UpdateCommentDTO) {

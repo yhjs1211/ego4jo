@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Card } from 'src/cards/card.entity';
 import {
   Column,
   Entity,
@@ -51,9 +52,9 @@ export class Columns {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  // @OneToMany(() => Card, (card) => card.column, { nullable: true })
-  // cards: Card[];
+  @OneToMany(() => Card, (card) => card.column, { nullable: true })
+  cards: Card[];
 
-  // @ManyToOne(()=> Broad, (board)=> board.columns, { onDelete: 'SET NULL'})
+  // @ManyToOne(()=> Board, (board)=> board.columns, { onDelete: 'SET NULL'})
   // board: Board;
 }

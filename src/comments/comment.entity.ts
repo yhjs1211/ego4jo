@@ -26,8 +26,11 @@ export class Comment {
   })
   comment: string;
 
+  @Column()
+  cardId: number;
+
   @ManyToOne(() => Card, (card) => card.comments)
-  @JoinColumn({ name: 'cardId' })
+  @JoinColumn({ name: 'cardId', referencedColumnName: 'id' })
   card: Card;
 
   //   @ManyToOne(() => User, (user) => user.comments)
