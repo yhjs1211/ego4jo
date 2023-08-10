@@ -6,10 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { CardsModule } from './cards/cards.module';
 import { CommentsModule } from './comments/comments.module';
+import { ColumnsModule } from './columns/columns.module';
+import { Users } from './users/users.entity';
 import { Card } from './cards/card.entity';
 import { Comment } from './comments/comment.entity';
-import { AuthModule } from './auth/auth.module';
-import { Users } from './users/users.entity';
+import { Columns } from './columns/columns.entity';
 
 @Module({
   imports: [
@@ -21,13 +22,13 @@ import { Users } from './users/users.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Card, Comment, Users],
+      entities: [Users, Card, Comment, Columns],
       synchronize: true,
     }),
     UsersModule,
     CardsModule,
     CommentsModule,
-    AuthModule,
+    ColumnsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
