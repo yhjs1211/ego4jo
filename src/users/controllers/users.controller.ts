@@ -7,7 +7,6 @@ import {
   Put,
   UploadedFiles,
   UseFilters,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
@@ -23,6 +22,7 @@ import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { Users } from '../users.entity';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
+import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 
 @ApiTags('users')
 @Controller('users')

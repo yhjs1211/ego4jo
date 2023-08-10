@@ -11,6 +11,7 @@ import { Users } from './users/users.entity';
 import { Card } from './cards/card.entity';
 import { Comment } from './comments/comment.entity';
 import { Columns } from './columns/columns.entity';
+import { Board } from './board/entity/board.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Columns } from './columns/columns.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Users, Card, Comment, Columns],
+      entities: [Users, Card, Comment, Columns, Board],
       synchronize: true,
     }),
     UsersModule,
