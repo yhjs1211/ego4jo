@@ -23,6 +23,7 @@ import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { Users } from '../users.entity';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
+import { UserCheckDto } from 'src/auth/dto/users.check.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -54,6 +55,14 @@ export class UsersController {
   @Get()
   getCurrentUser(@CurrentUser() user: Users) {
     return user;
+  }
+
+  // POST. http://localhost:8000/users/check
+  @ApiOperation({ summary: 'user check for update or delete' })
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  userCheck(@CurrentUser() user: Users, @Body() body: UserCheckDto) {
+    return this.authService.userCheck(user.id, body);
   }
 
   // PUT. http://localhost:8000/users

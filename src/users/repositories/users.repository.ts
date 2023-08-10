@@ -20,10 +20,17 @@ export class UsersRepository extends Repository<Users> {
     return await this.save(newUser);
   }
 
-  async findUserById(id: number): Promise<Users | null> {
+  async findUserByIdWithoutPassword(id: number): Promise<Users | null> {
     const user = await this.findOne({
       where: { id, deletedAt: null },
       select: ['id', 'email', 'name', 'imgUrl'],
+    });
+    return user;
+  }
+
+  async findUserById(id: number): Promise<Users | null> {
+    const user = await this.findOne({
+      where: { id, deletedAt: null },
     });
     return user;
   }
