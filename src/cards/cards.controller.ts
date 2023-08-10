@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Res,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,8 +18,10 @@ import { CreateCardDTO } from './DTO/create.DTO';
 import { Card } from './card.entity';
 import { UpdateCardDTO } from './DTO/update.DTO';
 import { Response } from 'express';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @ApiTags('cards')
+@UseInterceptors(SuccessInterceptor)
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardService: CardsService) {}

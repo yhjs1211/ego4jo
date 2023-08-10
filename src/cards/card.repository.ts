@@ -11,7 +11,10 @@ export class CardRepository extends Repository<Card> {
   }
 
   async findOneById(id: number): Promise<Card | null> {
-    const foundCard = await this.findOneBy({ id });
+    const foundCard = await this.findOne({
+      where: { id },
+      relations: { comments: true },
+    });
     return foundCard;
   }
 
@@ -26,13 +29,13 @@ export class CardRepository extends Repository<Card> {
   }
 
   async updateCard(card: Card, data: UpdateCardDTO): Promise<number> {
-    const result = await this.cardRepository.update({ id: card.id }, data);
+    const result = await this.update({ id: card.id }, data);
 
     return result.affected;
   }
 
   async deleteCard(id: number): Promise<number> {
-    const result = await this.cardRepository.delete({ id });
+    const result = await this.delete({ id });
 
     return result.affected;
   }
