@@ -4,20 +4,24 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersRepository } from '../repositories/users.repository';
-import { UserCreateDto } from '../dto/users.create.dto';
 import * as bcrypt from 'bcrypt';
 import { UserUpdateDto } from '../dto/users.update.dto';
+import { UserSignUpDto } from '../dto/users.signUp.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async signUp(body: UserCreateDto) {
-    const { email, password, name } = body;
+  async signUp(body: UserSignUpDto) {
+    const { email, password, confirm, name } = body;
     const isUserExist = await this.usersRepository.findUserByEmail(email);
 
     if (isUserExist) {
       throw new UnauthorizedException('이미 존재하는 사용자 입니다.');
+    }
+
+    if (password !== confirm) {
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
