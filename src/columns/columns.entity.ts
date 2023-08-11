@@ -56,5 +56,6 @@ export class Columns {
   cards: Card[];
 
   // @ManyToOne(()=> Board, (board)=> board.columns, { onDelete: 'SET NULL'})
+  // @JoinColumn({ name: 'boardId', referencedColumnName: 'id'})
   // board: Board;
 }
