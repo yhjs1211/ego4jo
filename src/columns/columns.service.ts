@@ -12,6 +12,8 @@ export class ColumnsService {
     return await this.columnsRepository.find({
       where: { deletedAt: null },
       select: ['id', 'title', 'boardId', 'columnNumber'],
+      relations: { cards: { comments: true } },
+      order: { cards: { cardNum: 'asc' } },
     });
   }
 
