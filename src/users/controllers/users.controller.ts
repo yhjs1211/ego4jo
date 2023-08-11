@@ -67,7 +67,7 @@ export class UsersController {
   }
 
   // PUT. http://localhost:8000/users
-  @ApiOperation({ summary: 'update current user infomation' })
+  @ApiOperation({ summary: 'update current user' })
   @UseGuards(JwtAuthGuard)
   @Put()
   async updateCurrentUser(
@@ -77,9 +77,9 @@ export class UsersController {
     return await this.usersSevice.updateUser(user.id, body);
   }
 
-  // POST. http://localhost:8000/users/upload
+  // POST. http://localhost:8000/users/image
   @ApiOperation({ summary: 'upload user profile image' })
-  @Post('upload')
+  @Post('image')
   @UseInterceptors(FileInterceptor('image'))
   @UseGuards(JwtAuthGuard)
   async uploadMediaFile(
