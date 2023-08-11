@@ -51,9 +51,9 @@ export class Columns {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  // @OneToMany(() => Card, (card) => card.column, { nullable: true })
+  // @OneToMany(() => Card, (card) => card.column)
   // cards: Card[];
 
-  // @ManyToOne(()=> Broad, (board)=> board.columns, { onDelete: 'SET NULL'})
+  // @ManyToOne(()=> Broad, (board)=> board.columns)
   // board: Board;
 }
