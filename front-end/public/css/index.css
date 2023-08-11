@@ -30,3 +30,7 @@ h2 {
 .modal-content {
   font-family: 'Noto Sans KR', sans-serif;
 }
+
+#precondition {
+  color: #5e5e5e;
+}

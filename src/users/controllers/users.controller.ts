@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserCreateDto } from '../dto/users.create.dto';
 import { UserUpdateDto } from '../dto/users.update.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
@@ -24,6 +23,7 @@ import { Users } from '../users.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserCheckDto } from 'src/auth/dto/users.check.dto';
 import { AwsService } from 'src/aws.service';
+import { UserSignUpDto } from '../dto/users.signUp.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -39,7 +39,8 @@ export class UsersController {
   // POST. http://localhost:8000/users
   @ApiOperation({ summary: 'sign-up' })
   @Post()
-  async signUp(@Body() body: UserCreateDto) {
+  async signUp(@Body() body: UserSignUpDto) {
+    console.log(body);
     return await this.usersSevice.signUp(body);
   }
 
