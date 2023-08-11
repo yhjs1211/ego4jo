@@ -1,8 +1,7 @@
-import { PickType } from '@nestjs/mapped-types';
-import { Columns } from '../columns.entity';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateColumnsDto } from './create-columns.dto';
 
-export class UpdateColumnsDto extends PickType(Columns, [
-  'title',
-  'boardId',
-  'columnNumber',
-] as const) {}
+export class UpdateColumnsDto extends PartialType(CreateColumnsDto) {
+  newColumnNumber?: number;
+  boardId?: number;
+}

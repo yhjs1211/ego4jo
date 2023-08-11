@@ -12,28 +12,27 @@ export class ColumnsRepository extends Repository<Columns> {
 
   async createColumns(data: CreateColumnsDto) {
     const columns = this.create(data);
-    await this.findAndCount().then((data) => {
-      this.merge(columns, { columnNumber: data[1] + 1 });
-    });
+    await this.findAndCount({ where: { boardId: data.boardId } }).then(
+      (data) => {
+        this.merge(columns, { columnNumber: data[1] + 1 });
+      },
+    );
 
     const createdColumns = await this.save(columns);
     return createdColumns;
   }
 
-  async updateColumns(columns: Columns, data: UpdateColumnsDto) {
-    const updatedColumns = await this.update({ id: columns.id }, data);
+  async updateColumns(id: number, data: UpdateColumnsDto) {
+    const updatedColumns = await this.update({ id }, data);
     return updatedColumns.affected;
   }
 
   async updateColumnNumber(
     min: number,
     max: number,
-    newColumnNum: number,
+    newColumnNumber: number,
     column: Columns,
     columns: Columns[],
-    isSame: boolean,
-    diffColumns?: Columns[],
-    boardId?: number,
   ) {
     return await this.dataSource.transaction(async (manager) => {
       if (column.columnNumber === min) {

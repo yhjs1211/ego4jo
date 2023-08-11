@@ -50,6 +50,7 @@ export class ColumnsController {
     @Body() body: UpdateColumnsDto,
   ) {
     const result = this.columnsService.updateColumns(columnsId, body);
+    console.log(body);
     return result;
   }
 
