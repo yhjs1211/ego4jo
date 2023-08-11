@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello-like Board</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-12 mb-4 bg-dark text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1>Trello</h1>
+            <a href="#" class="btn btn-primary">Invite</a>
+          </div>
+          <h2 class="text-center mt-3">My Board</h2>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-2">
+          <div class="card">
+            <div class="card-header">To Do</div>
+            <ul class="list-group list-group-flush sortable" data-list="todo">
+              <li class="list-group-item" draggable="true">Task 1</li>
+              <li class="list-group-item" draggable="true">Task 2</li>
+              <li class="list-group-item" draggable="true">Task 3</li>
+              <li class="list-group-item">
+                <button class="btn btn-success btn-block">+</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card">
+            <div class="card-header">In Progress</div>
+            <ul class="list-group list-group-flush sortable">
+              <li class="list-group-item" draggable="true">Task 4</li>
+              <li class="list-group-item" draggable="true">Task 5</li>
+              <li class="list-group-item" draggable="true">Task 6</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card">
+            <div class="card-header">Review</div>
+            <ul class="list-group list-group-flush sortable">
+              <li class="list-group-item" draggable="true">Task 7</li>
+              <li class="list-group-item" draggable="true">Task 8</li>
+              <li class="list-group-item" draggable="true">Task 9</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="card">
+            <div class="card-header">Done</div>
+            <ul class="list-group list-group-flush sortable">
+              <li class="list-group-item" draggable="true">Task 10</li>
+              <li class="list-group-item" draggable="true">Task 11</li>
+              <li class="list-group-item" draggable="true">Task 12</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success btn-block">Add Column</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const columns = document.querySelectorAll('.sortable');
+      columns.forEach((column) => {
+        new Sortable(column, {
+          group: 'shared',
+          animation: 150,
+          ghostClass: 'blue-background-class',
+        });
+      });
+    </script>
+  </body>
+</html>
