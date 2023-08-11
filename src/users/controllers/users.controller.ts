@@ -5,7 +5,7 @@ import {
   Get,
   Post,
   Put,
-  UploadedFiles,
+  UploadedFile,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -21,8 +21,9 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { Users } from '../users.entity';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/common/utils/multer.options';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UserCheckDto } from 'src/auth/dto/users.check.dto';
+import { AwsService } from 'src/aws.service';
 
 @ApiTags('users')
 @Controller('users')
@@ -32,6 +33,7 @@ export class UsersController {
   constructor(
     private readonly usersSevice: UsersService,
     private readonly authService: AuthService,
+    private readonly awsService: AwsService,
   ) {}
 
   // POST. http://localhost:8000/users
@@ -56,8 +58,16 @@ export class UsersController {
     return user;
   }
 
+  // POST. http://localhost:8000/users/check
+  @ApiOperation({ summary: 'user check for update or delete' })
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  userCheck(@CurrentUser() user: Users, @Body() body: UserCheckDto) {
+    return this.authService.userCheck(user.id, body);
+  }
+
   // PUT. http://localhost:8000/users
-  @ApiOperation({ summary: 'update current user infomation' })
+  @ApiOperation({ summary: 'update current user' })
   @UseGuards(JwtAuthGuard)
   @Put()
   async updateCurrentUser(
@@ -67,17 +77,25 @@ export class UsersController {
     return await this.usersSevice.updateUser(user.id, body);
   }
 
-  // POST. http://localhost:8000/users/upload
+  // POST. http://localhost:8000/users/image
   @ApiOperation({ summary: 'upload user profile image' })
-  @UseInterceptors(FilesInterceptor('image', 10, multerOptions('users')))
+  @Post('image')
+  @UseInterceptors(FileInterceptor('image'))
   @UseGuards(JwtAuthGuard)
-  @Post('upload')
-  uploadCatImage(
-    @UploadedFiles() files: Array<Express.Multer.File>,
+  async uploadMediaFile(
+    @UploadedFile() file: Express.Multer.File,
     @CurrentUser() user: Users,
   ) {
-    console.log(files);
-    return this.usersSevice.uploadImage(user, files);
+    console.log(file);
+    return await this.awsService.uploadImageToS3(user.id, 'users', file);
+  }
+
+  // GET. http://localhost:8000/users/image
+  @ApiOperation({ summary: 'get user profile image' })
+  @UseGuards(JwtAuthGuard)
+  @Get('image')
+  getUserImage(@CurrentUser() user: Users) {
+    return this.awsService.getAwsS3ImageUrl(user.id);
   }
 
   // DELETE. http://localhost:8000/users

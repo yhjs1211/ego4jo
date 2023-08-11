@@ -9,16 +9,17 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Res,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCardDTO } from './DTO/create.DTO';
 import { Card } from './card.entity';
 import { UpdateCardDTO } from './DTO/update.DTO';
-import { Response } from 'express';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @ApiTags('cards')
+@UseInterceptors(SuccessInterceptor)
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardService: CardsService) {}
@@ -64,7 +65,6 @@ export class CardsController {
   async updateCard(
     @Body() body: UpdateCardDTO,
     @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response,
   ) {
     await this.cardService.updateCard(body, id);
     return;
