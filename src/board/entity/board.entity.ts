@@ -2,10 +2,16 @@ import { Users } from 'src/users/users.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { User_Board } from './user_board.entity';
 
 @Entity({ schema: 'trello', name: 'board' })
 export class Board {
@@ -21,15 +27,18 @@ export class Board {
   @Column('varchar', { length: 1000 })
   description: string;
 
-  @ManyToOne(() => Users)
-  user = Users;
-
   @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @CreateDateColumn()
+  @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @ManyToOne(() => Users, (user) => user.boards)
+  user: Users;
+
+  @OneToMany(() => User_Board, (userBoard) => userBoard.board)
+  userBoard: User_Board[];
 }
