@@ -1,8 +1,11 @@
+import { Card } from 'src/cards/card.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -35,4 +38,8 @@ export class Users {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @ManyToMany(() => Card, (card) => card.workers)
+  @JoinTable({ name: 'users_cards' })
+  cards: Card[];
 }

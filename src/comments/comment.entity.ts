@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Card } from 'src/cards/card.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Comment {
@@ -21,6 +27,7 @@ export class Comment {
   comment: string;
 
   @ManyToOne(() => Card, (card) => card.comments)
+  @JoinColumn({ name: 'cardId' })
   card: Card;
 
   //   @ManyToOne(() => User, (user) => user.comments)
