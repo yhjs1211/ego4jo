@@ -3,6 +3,7 @@ import { Card } from 'src/cards/card.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -10,8 +11,7 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-// import { Card } from 'src/cards/card.entity';
-// import { Board } from 'src/board/board.entity';
+import { Board } from 'src/board/entity/board.entity';
 
 @Entity()
 export class Columns {
@@ -31,17 +31,13 @@ export class Columns {
 
   @ApiProperty({
     required: false,
-    description: 'This is boardId connected by Columns',
-  })
-  @Column()
-  boardId: number;
-
-  @ApiProperty({
-    required: false,
     description: 'The number in Column will be given by Service Logic',
   })
   @Column()
   columnNumber: number;
+
+  @Column()
+  boardId: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -55,7 +51,7 @@ export class Columns {
   @OneToMany(() => Card, (card) => card.column, { nullable: true })
   cards: Card[];
 
-  // @ManyToOne(()=> Board, (board)=> board.columns, { onDelete: 'SET NULL'})
-  // @JoinColumn({ name: 'boardId', referencedColumnName: 'id'})
-  // board: Board;
+  @ManyToOne(() => Board, (board) => board.columns)
+  @JoinColumn({ name: 'boardId', referencedColumnName: 'id' })
+  board: Board;
 }

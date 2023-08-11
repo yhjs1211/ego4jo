@@ -23,43 +23,43 @@ export class ColumnsRepository extends Repository<Columns> {
   }
 
   async updateColumns(id: number, data: UpdateColumnsDto) {
-    const updatedColumns = await this.update({ id }, data);
-    return updatedColumns.affected;
+    const updatedCols = (await this.update({ id }, data)).affected;
+    return updatedCols;
   }
 
-  async updateColumnNumber(
-    min: number,
-    max: number,
-    newColumnNumber: number,
-    column: Columns,
-    columns: Columns[],
-  ) {
-    return await this.dataSource.transaction(async (manager) => {
-      if (column.columnNumber === min) {
-        columns
-          .filter((column) => {
-            return column.columnNumber > min && column.columnNumber <= max;
-          })
-          .forEach(async (column) => {
-            await manager.update(Columns, column, {
-              columnNumber: column.columnNumber - 1,
-            });
-          });
-        return (await manager.update(Columns, column, { columnNumber: max }))
-          .affected;
-      } else if (column.columnNumber === max) {
-        columns
-          .filter((column) => {
-            return column.columnNumber <= max && column.columnNumber > min;
-          })
-          .forEach(async (column) => {
-            await manager.update(Columns, column, {
-              columnNumber: column.columnNumber + 1,
-            });
-          });
-        return (await manager.update(Columns, column, { columnNumber: min }))
-          .affected;
-      }
-    });
-  }
+  // async updateColumnNumber(
+  //   min: number,
+  //   max: number,
+  //   newColumnNumber: number,
+  //   column: Columns,
+  //   columns: Columns[],
+  // ) {
+  //   return await this.dataSource.transaction(async (manager) => {
+  //     if (column.columnNumber === min) {
+  //       columns
+  //         .filter((column) => {
+  //           return column.columnNumber > min && column.columnNumber <= max;
+  //         })
+  //         .forEach(async (column) => {
+  //           await manager.update(Columns, column, {
+  //             columnNumber: column.columnNumber - 1,
+  //           });
+  //         });
+  //       return (await manager.update(Columns, column, { columnNumber: max }))
+  //         .affected;
+  //     } else if (column.columnNumber === max) {
+  //       columns
+  //         .filter((column) => {
+  //           return column.columnNumber <= max && column.columnNumber > min;
+  //         })
+  //         .forEach(async (column) => {
+  //           await manager.update(Columns, column, {
+  //             columnNumber: column.columnNumber + 1,
+  //           });
+  //         });
+  //       return (await manager.update(Columns, column, { columnNumber: min }))
+  //         .affected;
+  //     }
+  //   });
+  // }
 }
