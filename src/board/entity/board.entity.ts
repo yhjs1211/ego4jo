@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User_Board } from './user_board.entity';
+import { Columns } from 'src/columns/columns.entity';
 
 @Entity({ schema: 'trello', name: 'board' })
 export class Board {
@@ -41,4 +42,7 @@ export class Board {
 
   @OneToMany(() => User_Board, (userBoard) => userBoard.board)
   userBoard: User_Board[];
+
+  @OneToMany(() => Columns, (column) => column.board)
+  columns: Columns[];
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ColumnsRepository } from './columns.repository';
 import { CreateColumnsDto } from './dto/create-columns.dto';
 import { UpdateColumnsDto } from './dto/update-columns.dto';
-import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class ColumnsService {
@@ -11,7 +10,7 @@ export class ColumnsService {
   async getColumns() {
     return await this.columnsRepository.find({
       where: { deletedAt: null },
-      select: ['id', 'title', 'boardId', 'columnNumber'],
+      select: ['id', 'title', 'columnNumber'],
       relations: { cards: { comments: true } },
       order: { cards: { cardNum: 'asc' } },
     });
