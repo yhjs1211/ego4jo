@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello Card Details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/cardDetail.css" />
+  </head>
+  <body>
+    <header class="bg-dark text-light">
+      <div class="container py-3">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-auto">
+            <h1>Trello</h1>
+          </div>
+          <div class="col-auto">
+            <button
+              class="btn btn-primary me-2"
+              data-bs-toggle="modal"
+              data-bs-target="#signupModal"
+            >
+              Sign Up
+            </button>
+            <button class="btn btn-secondary">Log In</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="card-containter row">
+      <div class="col-9" align="center">
+        <div class="card">
+          <div class="card-header">Card Details</div>
+          <div class="card-body">
+            <h5 class="card-title">Card Title</h5>
+            <p class="card-text">Card Description</p>
+            <p class="card-text">Deadline: August 31, 2023</p>
+            <p class="card-text">Color: Blue</p>
+          </div>
+          <div class="card-foot row">
+            <div id="commentInput" class="col-md-11">
+              <label for="comment">댓글 :&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input
+                type="text"
+                size="50"
+                name="comment"
+                id="comment"
+                placeholder="Input comment"
+              />
+              <button class="btn btn-success" type="button">create</button>
+              <button
+                class="btn btn-primary"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasScrolling"
+                aria-controls="offcanvasScrolling"
+              >
+                Edit
+              </button>
+            </div>
+            <div class="comment-container">
+              <ul class="comment-box">
+                <li>hi</li>
+                <li>hello</li>
+                <a href="./index.html?id=2">move</a>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="offcanvas offcanvas-end"
+      data-bs-scroll="true"
+      data-bs-backdrop="false"
+      tabindex="-1"
+      id="offcanvasScrolling"
+      aria-labelledby="offcanvasScrollingLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
+          ✨ Comment Update ✨
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <form>
+          <div class="form-group">
+            <label for="titleInput">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="titleInput"
+              value="Card Title"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descriptionInput">Description</label>
+            <textarea
+              class="form-control"
+              placeholder="Card Description"
+              id="descriptionInput"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="deadlineInput">Deadline</label>
+            <input type="date" class="form-control" id="deadlineInput" />
+          </div>
+          <div class="form-group">
+            <label for="colorInput">Color</label>
+            <input
+              type="color"
+              class="form-control"
+              id="colorInput"
+              value="#000000"
+            />
+          </div>
+          <button type="submit" class="btn btn-warning" id="updateBtn">
+            변경
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
