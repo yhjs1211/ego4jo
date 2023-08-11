@@ -1,0 +1,32 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0; /* 시작할 때 투명 */
+    transform: translateY(100%); /* 시작 위치 (밑에서) */
+  }
+  to {
+    opacity: 1; /* 끝날 때 불투명 */
+    transform: translateY(0); /* 끝 위치 (위로) */
+  }
+}
+
+h1 {
+  font-size: 50px;
+}
+
+h2 {
+  text-align: center; /* 가로 중앙 정렬 */
+  margin-top: 40vh; /* 세로 중앙 정렬 */
+  font-size: 100px;
+  color: #000000; /* 원하는 색상으로 변경 */
+  animation: fadeInUp 1s ease-in-out forwards;
+}
+
+.modal-content {
+  font-family: 'Noto Sans KR', sans-serif;
+}
