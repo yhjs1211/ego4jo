@@ -20,9 +20,11 @@ export class CardRepository extends Repository<Card> {
 
   async createCard(data: CreateCardDTO): Promise<Card> {
     const card = this.create(data);
-    await this.findAndCount().then((data) => {
-      this.merge(card, { cardNum: data[1] + 1 });
-    });
+    await this.findAndCount({ where: { columnId: data.columnId } }).then(
+      (data) => {
+        this.merge(card, { cardNum: data[1] + 1 });
+      },
+    );
 
     const createdCard = await this.save(card);
     return createdCard;
@@ -52,8 +54,8 @@ export class CardRepository extends Repository<Card> {
             .filter((card) => {
               return card.cardNum > min && card.cardNum <= max;
             })
-            .forEach((card) => {
-              manager.update(Card, card, { cardNum: card.cardNum - 1 });
+            .forEach(async (card) => {
+              await manager.update(Card, card, { cardNum: card.cardNum - 1 });
             });
           return (await manager.update(Card, card, { cardNum: max })).affected;
         } else if (card.cardNum === max) {
@@ -62,29 +64,25 @@ export class CardRepository extends Repository<Card> {
               return card.cardNum <= max && card.cardNum > min;
             })
             .forEach(async (card) => {
-              card.cardNum++;
               await manager.update(Card, card, { cardNum: card.cardNum + 1 });
             });
           return (await manager.update(Card, card, { cardNum: min })).affected;
         }
       } else {
         // 다른 컬럼일경우
-
         diffCards
           .filter((card) => {
-            card.cardNum >= newCardNum;
+            return card.cardNum >= newCardNum;
           })
           .forEach(async (card) => {
-            card.cardNum++;
-            await manager.save(card);
+            await manager.update(Card, card, { cardNum: card.cardNum + 1 });
           });
         cards
           .filter((val) => {
-            val.cardNum > card.cardNum;
+            return val.cardNum > card.cardNum;
           })
           .forEach(async (card) => {
-            card.cardNum--;
-            await manager.save(card);
+            await manager.update(Card, card, { cardNum: card.cardNum - 1 });
           });
         const updateCnt = (
           await manager.update(Card, card, {
