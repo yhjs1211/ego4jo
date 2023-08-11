@@ -1,3 +1,5 @@
+import { Board } from 'src/board/entity/board.entity';
+import { User_Board } from 'src/board/entity/user_board.entity';
 import { Card } from 'src/cards/card.entity';
 import {
   Column,
@@ -6,6 +8,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -42,4 +45,10 @@ export class Users {
   @ManyToMany(() => Card, (card) => card.workers)
   @JoinTable({ name: 'users_cards' })
   cards: Card[];
+
+  @OneToMany(() => Board, (board) => board.user)
+  boards: Board[];
+
+  @OneToMany(() => User_Board, (userBoard) => userBoard.user)
+  userBoard: User_Board[];
 }
