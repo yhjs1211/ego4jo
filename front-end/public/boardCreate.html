@@ -65,7 +65,61 @@
             Cancel
           </button>
           <button type="button" class="btn btn-primary" onclick="updateUserInfo()">
-            Sign Up
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">Edit User Infomation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="text-center mb-3">
+              <label for="backgroundImage">profile image: </label>
+              <input type="file" class="form-control-file" id="backgroundImage" />
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" onclick="updateUserImage()">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign Out Modal -->
+  <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">Edit User Infomation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="password" class="form-label"></label>
+              <input type="password" class="form-control" id="passwordForSignOut" placeholder="password" />
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" onclick="deleteUser()">
+            Sign Out
           </button>
         </div>
       </div>
@@ -82,10 +136,6 @@
         </div>
         <div class="modal-body">
           <form>
-            <div class="mb-3">
-              <label for="backgroundImage">background:</label>
-              <input type="file" class="form-control-file" id="backgroundImage" />
-            </div>
             <div class="mb-3">
               <label for="boardTitle"></label>
               <input type="text" class="form-control" id="boardTitle" placeholder="title" />
@@ -122,7 +172,9 @@
             </div>
             <div class="mt-3">
               <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-              <button class="btn btn-primary me-2">Sign Out</button>
+              <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#imageModal">Image</button>
+              <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#signOutModal">Sign
+                Out</button>
             </div>
           </div>
         </div>
@@ -162,6 +214,10 @@
     );
 
     window.onload = function () {
+      if (!getCookie()) {
+        window.location.href = "http://127.0.0.1:5500/front-end/public/index.html";
+      }
+      getUserImage();
       getUserInfo();
     };
 
@@ -204,7 +260,7 @@
       };
 
       fetch("http://localhost:8080/users", {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "Authorization": getCookie(),
@@ -220,6 +276,82 @@
             window.location.href = "http://127.0.0.1:5500/front-end/public/boardCreate.html";
           } else {
             alert("회원정보 수정 실패");
+          }
+        })
+        .catch((error) => {
+          console.error("this is error =>", error);
+        });
+    }
+
+    function getUserImage() {
+      fetch("http://localhost:8080/users/image", {
+        method: "GET",
+        headers: {
+          "Authorization": getCookie(),
+        },
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.data === 'https://inflearn-nest-cat.s3.amazonaws.com/') {
+          } else {
+            const userImageElement = document.getElementById("user-profile-image");
+            const userImage = data.data;
+            const profileImageElement = userImageElement.querySelector("img");
+            profileImageElement.src = userImage;
+          }
+        })
+        .catch((error) => {
+          console.error("this is error =>", error);
+        });
+    }
+
+    function updateUserImage() {
+      const backgroundImageInput = document.getElementById('backgroundImage');
+      const selectedFile = backgroundImageInput.files[0];
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      fetch("http://localhost:8080/users/image", {
+        method: "POST",
+        headers: {
+          "Authorization": getCookie(),
+        },
+        credentials: "include",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success === true) {
+            closeModal();
+            alert("사진 수정 성공")
+            window.location.href = "http://127.0.0.1:5500/front-end/public/boardCreate.html";
+          } else {
+            alert("사진 수정 실패");
+          }
+        })
+        .catch((error) => {
+          console.error("this is error =>", error);
+        });
+    }
+
+    function deleteUser() {
+      fetch("http://localhost:8080/users", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": getCookie(),
+        },
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success === true) {
+            closeModal();
+            alert("회원탈퇴 성공")
+            window.location.href = "http://127.0.0.1:5500/front-end/public/index.html";
+          } else {
+            alert("회원탈퇴 실패");
           }
         })
         .catch((error) => {

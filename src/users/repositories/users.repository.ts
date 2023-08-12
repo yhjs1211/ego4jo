@@ -35,7 +35,7 @@ export class UsersRepository extends Repository<Users> {
     return user;
   }
 
-  async updateUser(user: Users, data: UserUpdateDto): Promise<object> {
+  async updateUser(user: Users, data: Partial<UserUpdateDto>): Promise<object> {
     const result = await this.update({ id: user.id }, data);
     return result;
   }

@@ -3,8 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
-  Put,
   Res,
   UploadedFile,
   UseFilters,
@@ -69,13 +69,13 @@ export class UsersController {
     return this.authService.userCheck(user.id, body);
   }
 
-  // PUT. http://localhost:8080/users
+  // PATCH. http://localhost:8080/users
   @ApiOperation({ summary: 'update current user' })
   @UseGuards(JwtAuthGuard)
-  @Put()
+  @Patch()
   async updateCurrentUser(
     @CurrentUser() user: Users,
-    @Body() body: UserUpdateRequestDto,
+    @Body() body: Partial<UserUpdateRequestDto>,
   ) {
     return await this.usersSevice.updateUser(user.id, body);
   }

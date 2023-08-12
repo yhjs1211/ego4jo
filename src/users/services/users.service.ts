@@ -38,7 +38,7 @@ export class UsersService {
     };
   }
 
-  async updateUser(id: number, body: UserUpdateRequestDto) {
+  async updateUser(id: number, body: Partial<UserUpdateRequestDto>) {
     const { password, newPassword, name } = body;
     const user = await this.usersRepository.findUserById(id);
 
@@ -55,11 +55,14 @@ export class UsersService {
       throw new UnauthorizedException('password를 확인해주세요.');
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    let hashedPassword: string | undefined;
+    if (newPassword) {
+      await bcrypt.hash(newPassword, 10);
+    }
 
     await this.usersRepository.updateUser(user, {
       password: hashedPassword,
-      name,
+      name: name || user.name,
     });
 
     return {

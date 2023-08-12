@@ -27,10 +27,7 @@ export class Users {
   @Column()
   name: string;
 
-  @Column({
-    default:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/NestJS.svg/1200px-NestJS.svg.png',
-  })
+  @Column()
   imgUrl: string;
 
   @CreateDateColumn()
