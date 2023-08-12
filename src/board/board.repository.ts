@@ -23,7 +23,7 @@ export class BoardRepository extends Repository<Board> {
   async createBoard(user: Users, data: CreateBoardDto): Promise<any> {
     return await this.insert({
       title: data.title,
-      background: data.background,
+      // background: data.background,
       description: data.description,
       user,
     });
