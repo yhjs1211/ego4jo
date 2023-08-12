@@ -77,7 +77,7 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Cancel
           </button>
-          <button type="button" class="btn btn-primary" onclick="submitForm()">
+          <button type="button" class="btn btn-primary" onclick="signUp()">
             Sign Up
           </button>
         </div>
@@ -137,35 +137,40 @@
     let loginModal = new bootstrap.Modal(
       document.getElementById("loginModal")
     );
-    let alertMessage = document.getElementById("alertMessage");
-    let successMessage = document.getElementById("successMessage");
 
-    // window.onload = function () {
-    //   checkLoggedInStatus();
-    // };
+    window.onload = function () {
+      checkLoggedInStatus();
+    };
 
-    // function checkLoggedInStatus() {
-    //   axios.get("http://localhost:8000/users")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.data) {
-    //         showLogoutButton();
-    //       } else {
-    //         showLoginButton();
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error("this is error =>", error);
-    //     });
-    // }
+    function checkLoggedInStatus() {
+      fetch("http://localhost:8080/users", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": getCookie(),
+        },
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success === true) {
+            showLogoutButton();
+          } else {
+            showLoginButton();
+          }
+        })
+        .catch((error) => {
+          console.error("this is error =>", error);
+        });
+    }
 
-    // function showLogoutButton() {
-    //   let loginButton = document.getElementById("loginButton");
-    //   let logoutButton = document.getElementById("logoutButton");
+    function showLogoutButton() {
+      let loginButton = document.getElementById("loginButton");
+      let logoutButton = document.getElementById("logoutButton");
 
-    //   loginButton.classList.add("d-none");
-    //   logoutButton.classList.remove("d-none");
-    // }
+      loginButton.classList.add("d-none");
+      logoutButton.classList.remove("d-none");
+    }
 
     function showLoginButton() {
       var loginButton = document.getElementById("loginButton");
@@ -175,7 +180,7 @@
       logoutButton.classList.add("d-none");
     }
 
-    function submitForm() {
+    function signUp() {
       const userData = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
@@ -195,7 +200,7 @@
           if (data.data.message === "회원가입 성공") {
             closeModal();
           } else {
-            showAlert(data.data.message);
+            alert("회원가입 실패");
           }
         })
         .catch((error) => {
@@ -203,63 +208,65 @@
         });
     }
 
-    // function login() {
-    //   let userData = {
-    //     email: document.getElementById("login-email").value,
-    //     password: document.getElementById("login-password").value,
-    //   };
+    function login() {
+      const userData = {
+        email: document.getElementById("login-email").value,
+        password: document.getElementById("login-password").value,
+      };
 
-    //   axios.post("http://localhost:8000/users/login", userData, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     }
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.message === "사용자 인증 성공") {
-    //         closeModal();
-    //         showSuccessMessage("사용자 인증 성공");
-    //         showLogoutButton();
-    //       } else {
-    //         showAlert("사용자 인증 실패");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error("this is error =>", error);
-    //     });
-    // }
+      fetch("http://localhost:8080/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.token) {
+            setCookie('Authorization', data.token, 1);
+            closeModal();
+            alert("사용자 인증 성공");
+            window.location.reload();
+          } else {
+            alert("사용자 인증 실패");
+          }
+        })
+        .catch((error) => {
+          console.error("this is error =>", error);
+        });
+    }
 
-    // function logout() {
-    //   axios.post("http://localhost:8000/users/logout")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.message === "사용자 인증 해제 성공") {
-    //         showSuccessMessage("사용자 인증 해제 성공");
-    //         showLoginButton();
-    //       } else {
-    //         showAlert("사용자 인증 해제 실패");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error("this is error =>", error);
-    //     });
-    // }
+    function logout() {
+      try {
+        deleteCookie();
+        alert("사용자 인증 해제 성공");
+        window.location.reload();
+      } catch {
+        alert("사용자 인증 해제 실패");
+      };
+    }
+
+    function setCookie(cookieName, cookieValue, expirationHour) {
+      const date = new Date();
+      date.setTime(date.getTime() + (expirationHour * 60 * 60 * 1000));
+      const expires = `expires=${date.toUTCString()}`;
+      document.cookie = `${cookieName}=${encodeURIComponent(`Bearer ${cookieValue}`)}; ${expires}; path=/`;
+    }
+
+    function getCookie() {
+      const cookie = decodeURIComponent(document.cookie);
+      const [name, value] = cookie.split("=");
+      return value;
+    }
+
+    function deleteCookie() {
+      document.cookie = "Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;";
+    }
 
     function closeModal() {
       signupModal.hide();
       loginModal.hide();
-    }
-
-    function showSuccessMessage(message) {
-      successMessage.classList.remove("d-none");
-      successMessage.classList.add("alert-success");
-      successMessage.textContent = message;
-    }
-
-    function showAlert(message) {
-      alertMessage.classList.remove("d-none");
-      alertMessage.classList.add("alert-danger");
-      alertMessage.textContent = message;
     }
   </script>
 </body>
