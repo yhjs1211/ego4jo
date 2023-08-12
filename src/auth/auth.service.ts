@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from 'src/users/repositories/users.repository';
 import { UserCheckDto } from './dto/users.check.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async jwtLogIn(data: LoginRequestDto) {
+  async jwtLogIn(data: LoginRequestDto, res: Response) {
     const { email, password } = data;
 
     const user = await this.usersRepository.findUserByEmail(email);
@@ -31,10 +32,11 @@ export class AuthService {
     }
 
     const payload = { id: user.id, email: email };
+    const token = this.jwtService.sign(payload);
 
-    return {
-      token: this.jwtService.sign(payload),
-    };
+    return res.send({
+      token: token,
+    });
   }
 
   async userCheck(id: number, data: UserCheckDto) {
