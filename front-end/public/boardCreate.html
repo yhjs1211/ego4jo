@@ -33,6 +33,45 @@
     </div>
   </header>
 
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">Edit User Infomation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="password" class="form-label"></label>
+              <input type="password" class="form-control" id="password" placeholder="password" />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label"></label>
+              <input type="password" class="form-control" id="newPassword" placeholder="new password" />
+            </div>
+            <div class="text-center mb-3">
+              <p id="precondition">8자리 이상, 영대문자, 소문자, 숫자를 반드시 포함해야 합니다.</p>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label"></label>
+              <input type="name" class="form-control" id="name" placeholder="name" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" onclick="updateUserInfo()">
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Create Modal -->
   <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -78,11 +117,11 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/NestJS.svg/1200px-NestJS.svg.png"
               alt="Profile Picture" class="rounded-circle" width="200" height="200">
             <div class="text-center">
-              <h3 id="user-name"></h3>
+              <h3 id="user-name">name</h3>
               <p id="user-email">e-mail</p>
             </div>
             <div class="mt-3">
-              <button class="btn btn-primary me-2">Edit</button>
+              <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
               <button class="btn btn-primary me-2">Sign Out</button>
             </div>
           </div>
@@ -115,6 +154,13 @@
     crossorigin="anonymous"></script>
 
   <script>
+    let editModal = new bootstrap.Modal(
+      document.getElementById("editModal")
+    );
+    let createModal = new bootstrap.Modal(
+      document.getElementById("createModal")
+    );
+
     window.onload = function () {
       getUserInfo();
     };
@@ -150,6 +196,37 @@
         });
     }
 
+    function updateUserInfo() {
+      const userData = {
+        password: document.getElementById("password").value,
+        newPassword: document.getElementById("newPassword").value,
+        name: document.getElementById("name").value,
+      };
+
+      fetch("http://localhost:8080/users", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": getCookie(),
+        },
+        credentials: "include",
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.data.message === "회원정보 수정 성공") {
+            closeModal();
+            alert("회원정보 수정 성공")
+            window.location.href = "http://127.0.0.1:5500/front-end/public/boardCreate.html";
+          } else {
+            alert("회원정보 수정 실패");
+          }
+        })
+        .catch((error) => {
+          console.error("this is error =>", error);
+        });
+    }
+
     function getCookie() {
       const cookie = decodeURIComponent(document.cookie);
       const [name, value] = cookie.split("=");
@@ -158,6 +235,11 @@
 
     function deleteCookie() {
       document.cookie = "Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;";
+    }
+
+    function closeModal() {
+      editModal.hide();
+      createModal.hide();
     }
   </script>
 </body>
