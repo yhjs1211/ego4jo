@@ -5,9 +5,8 @@
   margin-top: 100px;
 }
 .col {
-  flex-basis: 10%;
   background: #ddd;
-  min-height: 90vh;
+  /* min-height: 90vh; */
   padding: 5px;
   border-radius: 10px;
 }
@@ -19,8 +18,8 @@
 }
 .list-group-item {
   background: #fff;
-  margin: 20px;
-  padding: 10px;
-  border-radius: 5px;
+  margin: 10px;
+  padding: 5px;
+  /* border-radius: 5px; */
   cursor: pointer;
 }

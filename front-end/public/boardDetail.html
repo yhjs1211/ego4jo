@@ -12,31 +12,44 @@
     <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
   </head>
   <body>
+    <header class="bg-dark text-light">
+      <div class="container py-3">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-auto">
+            <h1>Trello</h1>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-primary me-2">Invite</button>
+            <button
+              class="btn btn-primary me-2"
+              id="logoutButton"
+              onclick="logout()"
+            >
+              Log Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
     <div class="container mt-4">
       <div class="row">
-        <div class="col-md-12 mb-4 bg-dark text-white">
-          <div class="d-flex justify-content-between align-items-center">
-            <h1>Trello</h1>
-            <a href="#" class="btn btn-primary">Invite</a>
-          </div>
+        <div class="col-md-12 mb-4 bg-white text-dark">
           <h2 class="text-center mt-3">My Board</h2>
         </div>
       </div>
       <div class="row justify-content-center">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <div class="card">
             <div class="card-header">To Do</div>
             <ul class="list-group list-group-flush sortable" data-list="todo">
               <li class="list-group-item" draggable="true">Task 1</li>
               <li class="list-group-item" draggable="true">Task 2</li>
               <li class="list-group-item" draggable="true">Task 3</li>
-              <li class="list-group-item">
-                <button class="btn btn-success btn-block">+</button>
-              </li>
             </ul>
+            <button class="btn btn-success btn-block">Add Card+</button>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <div class="card">
             <div class="card-header">In Progress</div>
             <ul class="list-group list-group-flush sortable">
@@ -46,9 +59,9 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <div class="card">
-            <div class="card-header">Review</div>
+            <div class="card-header">Done</div>
             <ul class="list-group list-group-flush sortable">
               <li class="list-group-item" draggable="true">Task 7</li>
               <li class="list-group-item" draggable="true">Task 8</li>
@@ -57,17 +70,7 @@
           </div>
         </div>
         <div class="col-md-2">
-          <div class="card">
-            <div class="card-header">Done</div>
-            <ul class="list-group list-group-flush sortable">
-              <li class="list-group-item" draggable="true">Task 10</li>
-              <li class="list-group-item" draggable="true">Task 11</li>
-              <li class="list-group-item" draggable="true">Task 12</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-success btn-block">Add Column</button>
+          <button class="btn btn-success btn-block">Add Column+</button>
         </div>
       </div>
     </div>
