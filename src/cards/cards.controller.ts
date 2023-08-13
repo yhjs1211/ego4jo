@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
@@ -24,14 +25,14 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 export class CardsController {
   constructor(private readonly cardService: CardsService) {}
 
-  @Get(':id')
+  @Get()
   @ApiOperation({ summary: 'Get Card Detail' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 200, description: 'OK', type: Card })
   async getCardDetailById(
-    @Param('id', ParseIntPipe) id: number,
+    @Query('id', ParseIntPipe) id: number,
   ): Promise<Card> {
-    const result = await this.cardService.getCardDetailById(id);
+    const result = await this.cardService.getCardDetailById(id); // cardId
     if (!result) throw new NotFoundException('There is no Card in Database');
 
     return result;
@@ -52,7 +53,7 @@ export class CardsController {
     return result;
   }
 
-  @Put(':id')
+  @Put('/:id')
   @HttpCode(204)
   @ApiOperation({ summary: 'Update Card' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
@@ -70,7 +71,7 @@ export class CardsController {
     return;
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @HttpCode(204)
   @ApiOperation({ summary: 'Delete Card' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })

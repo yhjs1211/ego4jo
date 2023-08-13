@@ -11,6 +11,8 @@ export class ColumnsRepository extends Repository<Columns> {
   }
 
   async createColumns(data: CreateColumnsDto) {
+    console.log(data);
+
     const columns = this.create(data);
     await this.findAndCount({ where: { boardId: data.boardId } }).then(
       (data) => {

@@ -1,5 +1,6 @@
-.comment-box {
+#comment-box {
   list-style-type: none;
+  padding-bottom: 10px;
 }
 
 #offcanvasScrolling {
@@ -7,5 +8,9 @@
 }
 
 #updateBtn {
+  float: right;
+}
+
+#deleteCommentBtn {
   float: right;
 }

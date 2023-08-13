@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Card } from 'src/cards/card.entity';
+import { Users } from 'src/users/users.entity';
 import {
   Column,
   Entity,
@@ -29,10 +30,14 @@ export class Comment {
   @Column()
   cardId: number;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => Card, (card) => card.comments)
   @JoinColumn({ name: 'cardId', referencedColumnName: 'id' })
   card: Card;
 
-  //   @ManyToOne(() => User, (user) => user.comments)
-  //   user: User;
+  @ManyToOne(() => Users, (user) => user.comments)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user: Users;
 }

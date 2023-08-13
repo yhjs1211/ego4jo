@@ -1,6 +1,7 @@
 import { Board } from 'src/board/entity/board.entity';
 import { User_Board } from 'src/board/entity/user_board.entity';
 import { Card } from 'src/cards/card.entity';
+import { Comment } from 'src/comments/comment.entity';
 import {
   Column,
   CreateDateColumn,
@@ -27,10 +28,7 @@ export class Users {
   @Column()
   name: string;
 
-  @Column({
-    default:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/NestJS.svg/1200px-NestJS.svg.png',
-  })
+  @Column({ nullable: true })
   imgUrl: string;
 
   @CreateDateColumn()
@@ -42,9 +40,12 @@ export class Users {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToMany(() => Card, (card) => card.workers)
-  @JoinTable({ name: 'users_cards' })
+  @ManyToMany(() => Card, (card) => card.workers, { cascade: true })
+  @JoinTable({ name: 'workers' })
   cards: Card[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 
   @OneToMany(() => Board, (board) => board.user)
   boards: Board[];

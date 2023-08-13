@@ -40,7 +40,6 @@ export class UsersController {
   @ApiOperation({ summary: 'sign-up' })
   @Post()
   async signUp(@Body() body: UserSignUpDto) {
-    console.log(body);
     return await this.usersSevice.signUp(body);
   }
 
