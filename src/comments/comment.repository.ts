@@ -16,9 +16,9 @@ export class CommentRepository extends Repository<Comment> {
     return comments;
   }
 
-  async createComment(cardId: number, data: CreateCommentDTO) {
+  async createComment(cardId: number, data: CreateCommentDTO, userId: number) {
     const comment = this.create(data);
-    this.merge(comment, { cardId });
+    this.merge(comment, { cardId, userId });
 
     await this.save(comment);
     return comment;

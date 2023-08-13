@@ -1,29 +1,44 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommentRepository } from './comment.repository';
 import { CreateCommentDTO } from './DTO/create.DTO';
-import { CardRepository } from 'src/cards/card.repository';
 import { UpdateCommentDTO } from './DTO/update.DTO';
+import { Users } from 'src/users/users.entity';
 
 @Injectable()
 export class CommentsService {
-  constructor(
-    private readonly commentRepository: CommentRepository,
-    private readonly cardRepository: CardRepository,
-  ) {}
+  constructor(private readonly commentRepository: CommentRepository) {}
 
   async getAllCommentsByCardId(cardId: number) {
     return this.commentRepository.findAllByCard(cardId);
   }
 
-  async createCommentByCardId(cardId: number, data: CreateCommentDTO) {
-    return this.commentRepository.createComment(cardId, data);
+  async createCommentByCardId(
+    cardId: number,
+    data: CreateCommentDTO,
+    user: Users,
+  ) {
+    return this.commentRepository.createComment(cardId, data, user.id);
   }
 
-  updateCommentById(commentId: number, data: UpdateCommentDTO) {
-    return this.commentRepository.updateCommentById(commentId, data);
+  async updateCommentById(
+    commentId: number,
+    data: UpdateCommentDTO,
+    user: Users,
+  ) {
+    const comment = await this.commentRepository.findOneBy({ id: commentId });
+    if (comment.userId === user.id) {
+      return this.commentRepository.updateCommentById(commentId, data);
+    } else {
+      throw new BadRequestException('Comment should be updated by writer');
+    }
   }
 
-  deleteCommentById(commentId: number) {
-    return this.commentRepository.deleteCommentById(commentId);
+  async deleteCommentById(commentId: number, user: Users) {
+    const comment = await this.commentRepository.findOneBy({ id: commentId });
+    if (comment.userId === user.id) {
+      return this.commentRepository.deleteCommentById(commentId);
+    } else {
+      throw new BadRequestException('Comment should be deleted by writer');
+    }
   }
 }

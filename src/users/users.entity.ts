@@ -1,6 +1,7 @@
 import { Board } from 'src/board/entity/board.entity';
 import { User_Board } from 'src/board/entity/user_board.entity';
 import { Card } from 'src/cards/card.entity';
+import { Comment } from 'src/comments/comment.entity';
 import {
   Column,
   CreateDateColumn,
@@ -39,11 +40,14 @@ export class Users {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToMany(() => Card, (card) => card.workers)
-  @JoinTable({ name: 'users_cards' })
+  @ManyToMany(() => Card, (card) => card.workers, { cascade: true })
+  @JoinTable({ name: 'workers' })
   cards: Card[];
 
-  @OneToMany(() => Board, (board) => board.user, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
+
+  @OneToMany(() => Board, (board) => board.user)
   boards: Board[];
 
   @OneToMany(() => User_Board, (userBoard) => userBoard.user, { cascade: true })

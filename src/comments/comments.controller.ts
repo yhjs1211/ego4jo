@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
@@ -14,9 +15,13 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCommentDTO } from './DTO/create.DTO';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { UpdateCommentDTO } from './DTO/update.DTO';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { Users } from 'src/users/users.entity';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 
 @ApiTags('comments')
 @UseInterceptors(SuccessInterceptor)
+@UseGuards(JwtAuthGuard)
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
@@ -34,9 +39,14 @@ export class CommentsController {
   @ApiOperation({ summary: 'Create comment for card by id' })
   async createCommentByCardId(
     @Param('cardId', ParseIntPipe) id: number,
+    @CurrentUser() user: Users,
     @Body() body: CreateCommentDTO,
   ) {
-    const result = await this.commentService.createCommentByCardId(id, body);
+    const result = await this.commentService.createCommentByCardId(
+      id,
+      body,
+      user,
+    );
     return result;
   }
 
@@ -44,17 +54,21 @@ export class CommentsController {
   @ApiOperation({ summary: 'Update Comment by Comment ID' })
   async updateCommentByCommentId(
     @Param('commentId', ParseIntPipe) id: number,
+    @CurrentUser() user: Users,
     @Body() body: UpdateCommentDTO,
   ) {
-    const result = await this.commentService.updateCommentById(id, body);
+    const result = await this.commentService.updateCommentById(id, body, user);
 
     return result;
   }
 
   @Delete('/:commentId')
   @ApiOperation({ summary: 'Delete Comment by Comment ID' })
-  async deleteCommentByCommentId(@Param('commentId', ParseIntPipe) id: number) {
-    const result = await this.commentService.deleteCommentById(id);
+  async deleteCommentByCommentId(
+    @Param('commentId', ParseIntPipe) id: number,
+    @CurrentUser() user: Users,
+  ) {
+    const result = await this.commentService.deleteCommentById(id, user);
     return result;
   }
 }

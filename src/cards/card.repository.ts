@@ -13,18 +13,16 @@ export class CardRepository extends Repository<Card> {
   async findOneById(id: number): Promise<Card | null> {
     const foundCard = await this.findOne({
       where: { id },
-      relations: { comments: true },
+      relations: { comments: { user: true }, workers: true },
     });
     return foundCard;
   }
 
   async createCard(data: CreateCardDTO): Promise<Card> {
     const card = this.create(data);
-    await this.findAndCount({ where: { columnId: data.columnId } }).then(
-      (data) => {
-        this.merge(card, { cardNum: data[1] + 1 });
-      },
-    );
+    this.findAndCount({ where: { columnId: data.columnId } }).then((data) => {
+      this.merge(card, { cardNum: data[1] + 1 });
+    });
 
     const createdCard = await this.save(card);
     return createdCard;
@@ -34,6 +32,11 @@ export class CardRepository extends Repository<Card> {
     const updateCnt = (await this.update({ id }, data)).affected;
 
     return updateCnt;
+  }
+
+  async addUserOnCard(card: Card) {
+    const savedCard = await this.save(card);
+    return savedCard;
   }
 
   async updateCardNumber(

@@ -1,0 +1,16 @@
+#comment-box {
+  list-style-type: none;
+  padding-bottom: 10px;
+}
+
+#offcanvasScrolling {
+  background-color: burlywood;
+}
+
+#updateBtn {
+  float: right;
+}
+
+#deleteCommentBtn {
+  float: right;
+}
