@@ -66,7 +66,7 @@ export class CardRepository extends Repository<Card> {
         } else if (card.cardNum === max) {
           cards
             .filter((card) => {
-              return card.cardNum <= max && card.cardNum > min;
+              return card.cardNum < max && card.cardNum >= min;
             })
             .forEach(async (card) => {
               await manager.update(Card, card, { cardNum: card.cardNum + 1 });

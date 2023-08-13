@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (result.data.workers.length !== 0) {
     const memberDiv = document.createElement('div');
     memberDiv.innerHTML = `
-    <h3 style="color:coral">Members</h3>
+    <h3 style="color:#4f0303">Members</h3>
     `;
     const ul = document.createElement('ul');
     ul.setAttribute('id', 'workers');
@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     result.data.workers.forEach((w, idx) => {
       const li = document.createElement('li');
       li.setAttribute('id', w.id);
-      li.innerHTML += `${idx + 1} : ${w.name}`;
+      li.innerHTML += `${idx + 1} : ${
+        w.name
+      }<button type="button" class="btn btn-close" />`;
       ul.appendChild(li);
     });
     memberDiv.appendChild(ul);
@@ -119,7 +121,7 @@ async function updateCardMember() {
     ).catch((e) => {
       return e;
     });
-    console.log(result);
+    window.location.reload();
   }
 }
 
@@ -127,22 +129,23 @@ async function createCommentForCard() {
   const comment = document.getElementById('comment');
 
   const obj = {};
-
   obj.comment = comment.value;
 
   const options = {
     method: 'POST',
-    credential: 'includes',
+    credentials: 'include',
     body: JSON.stringify(obj),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: getCookie(),
     },
   };
 
-  const result = await fetch(
-    `http://localhost:8080/comments/${id}`,
-    options,
-  ).then((data) => data.json());
+  await fetch(`http://localhost:8080/comments/${id}`, options)
+    .then((data) => data.json())
+    .catch((e) => {
+      console.log(e);
+    });
 
   window.location.reload();
 }
@@ -152,13 +155,31 @@ async function deleteComment(tag) {
 
   const options = {
     method: 'DELETE',
-    credential: 'includes',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: getCookie(),
     },
   };
 
   await fetch(`http://localhost:8080/comments/${commentId}`, options);
 
   window.location.reload();
+}
+
+function logout() {
+  try {
+    document.cookie =
+      'Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;';
+    alert('사용자 인증 해제 성공');
+    window.location.href = 'http://127.0.0.1:5500/front-end/public/index.html';
+  } catch {
+    alert('사용자 인증 해제 실패');
+  }
+}
+
+function getCookie() {
+  const cookie = decodeURIComponent(document.cookie);
+  const token = cookie.split('=')[1];
+  return token;
 }

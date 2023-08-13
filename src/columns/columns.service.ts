@@ -16,6 +16,13 @@ export class ColumnsService {
     });
   }
 
+  getColumnDetailById(id: number) {
+    return this.columnsRepository.findOne({
+      where: { id },
+      relations: { cards: true },
+    });
+  }
+
   createColumns(data: CreateColumnsDto) {
     return this.columnsRepository.createColumns(data);
   }

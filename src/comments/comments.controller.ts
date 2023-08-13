@@ -21,7 +21,6 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 
 @ApiTags('comments')
 @UseInterceptors(SuccessInterceptor)
-@UseGuards(JwtAuthGuard)
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
@@ -36,6 +35,7 @@ export class CommentsController {
   }
 
   @Post('/:cardId')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create comment for card by id' })
   async createCommentByCardId(
     @Param('cardId', ParseIntPipe) id: number,
@@ -51,6 +51,7 @@ export class CommentsController {
   }
 
   @Put('/:commentId')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Update Comment by Comment ID' })
   async updateCommentByCommentId(
     @Param('commentId', ParseIntPipe) id: number,
@@ -63,6 +64,7 @@ export class CommentsController {
   }
 
   @Delete('/:commentId')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Delete Comment by Comment ID' })
   async deleteCommentByCommentId(
     @Param('commentId', ParseIntPipe) id: number,
