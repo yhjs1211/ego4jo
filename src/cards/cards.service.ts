@@ -21,7 +21,10 @@ export class CardsService {
   }
 
   async updateCard(data: UpdateCardDTO, id: number): Promise<number | Card> {
-    const card = await this.cardRepository.findOneBy({ id });
+    const card = await this.cardRepository.findOne({
+      where: { id },
+      relations: { workers: true },
+    });
 
     if (card) {
       if (data.columnId && data.newCardNum) {
