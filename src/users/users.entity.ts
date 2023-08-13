@@ -50,6 +50,6 @@ export class Users {
   @OneToMany(() => Board, (board) => board.user)
   boards: Board[];
 
-  @OneToMany(() => User_Board, (userBoard) => userBoard.user)
+  @OneToMany(() => User_Board, (userBoard) => userBoard.user, { cascade: true })
   userBoard: User_Board[];
 }

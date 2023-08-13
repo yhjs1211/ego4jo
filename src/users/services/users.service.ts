@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { UsersRepository } from '../repositories/users.repository';
 import * as bcrypt from 'bcrypt';
-import { UserUpdateDto } from '../dto/users.update.dto';
 import { UserSignUpDto } from '../dto/users.signUp.dto';
+import { UserUpdateRequestDto } from '../dto/users.update.request.dto';
 
 @Injectable()
 export class UsersService {
@@ -38,19 +38,31 @@ export class UsersService {
     };
   }
 
-  async updateUser(id: number, body: UserUpdateDto) {
-    const { password, name } = body;
+  async updateUser(id: number, body: Partial<UserUpdateRequestDto>) {
+    const { password, newPassword, name } = body;
     const user = await this.usersRepository.findUserById(id);
 
     if (!user) {
       throw new NotFoundException('존재하지 않는 사용자 입니다.');
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const isPasswordValidated: boolean = await bcrypt.compare(
+      password,
+      user.password,
+    );
+
+    if (!isPasswordValidated) {
+      throw new UnauthorizedException('password를 확인해주세요.');
+    }
+
+    let hashedPassword: string | undefined;
+    if (newPassword) {
+      hashedPassword = await bcrypt.hash(newPassword, 10);
+    }
 
     await this.usersRepository.updateUser(user, {
-      password: hashedPassword,
-      name,
+      password: hashedPassword || user.password,
+      name: name || user.name,
     });
 
     return {

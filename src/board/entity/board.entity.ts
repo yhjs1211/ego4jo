@@ -20,8 +20,8 @@ export class Board {
   @Column('varchar', { length: 50 })
   title: string;
 
-  @Column('varchar', { length: 100 })
-  background: string;
+  // @Column('varchar', { length: 100 })
+  // background: string;
 
   @Column('varchar', { length: 1000 })
   description: string;
@@ -35,7 +35,9 @@ export class Board {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToOne(() => Users, (user) => user.boards)
+  @ManyToOne(() => Users, (user) => user.boards, {
+    onDelete: 'CASCADE',
+  })
   user: Users;
 
   @OneToMany(() => User_Board, (userBoard) => userBoard.board)

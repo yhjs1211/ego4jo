@@ -3,8 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
-  Put,
+  Res,
   UploadedFile,
   UseFilters,
   UseGuards,
@@ -12,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserUpdateDto } from '../dto/users.update.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
@@ -24,6 +24,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserCheckDto } from 'src/auth/dto/users.check.dto';
 import { AwsService } from 'src/aws.service';
 import { UserSignUpDto } from '../dto/users.signUp.dto';
+import { Response } from 'express';
+import { UserUpdateRequestDto } from '../dto/users.update.request.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -36,21 +38,21 @@ export class UsersController {
     private readonly awsService: AwsService,
   ) {}
 
-  // POST. http://localhost:8000/users
+  // POST. http://localhost:8080/users
   @ApiOperation({ summary: 'sign-up' })
   @Post()
   async signUp(@Body() body: UserSignUpDto) {
     return await this.usersSevice.signUp(body);
   }
 
-  // POST. http://localhost:8000/users/login
+  // POST. http://localhost:8080/users/login
   @ApiOperation({ summary: 'log-in' })
   @Post('login')
-  logIn(@Body() body: LoginRequestDto) {
-    return this.authService.jwtLogIn(body);
+  logIn(@Body() body: LoginRequestDto, @Res() res: Response) {
+    return this.authService.jwtLogIn(body, res);
   }
 
-  // GET. http://localhost:8000/users
+  // GET. http://localhost:8080/users
   @ApiOperation({ summary: 'get current user' })
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -58,7 +60,7 @@ export class UsersController {
     return user;
   }
 
-  // POST. http://localhost:8000/users/check
+  // POST. http://localhost:8080/users/check
   @ApiOperation({ summary: 'user check for update or delete' })
   @UseGuards(JwtAuthGuard)
   @Post('check')
@@ -66,18 +68,18 @@ export class UsersController {
     return this.authService.userCheck(user.id, body);
   }
 
-  // PUT. http://localhost:8000/users
+  // PATCH. http://localhost:8080/users
   @ApiOperation({ summary: 'update current user' })
   @UseGuards(JwtAuthGuard)
-  @Put()
+  @Patch()
   async updateCurrentUser(
     @CurrentUser() user: Users,
-    @Body() body: UserUpdateDto,
+    @Body() body: Partial<UserUpdateRequestDto>,
   ) {
     return await this.usersSevice.updateUser(user.id, body);
   }
 
-  // POST. http://localhost:8000/users/image
+  // POST. http://localhost:8080/users/image
   @ApiOperation({ summary: 'upload user profile image' })
   @Post('image')
   @UseInterceptors(FileInterceptor('image'))
@@ -90,7 +92,7 @@ export class UsersController {
     return await this.awsService.uploadImageToS3(user.id, 'users', file);
   }
 
-  // GET. http://localhost:8000/users/image
+  // GET. http://localhost:8080/users/image
   @ApiOperation({ summary: 'get user profile image' })
   @UseGuards(JwtAuthGuard)
   @Get('image')
@@ -98,7 +100,7 @@ export class UsersController {
     return this.awsService.getAwsS3ImageUrl(user.id);
   }
 
-  // DELETE. http://localhost:8000/users
+  // DELETE. http://localhost:8080/users
   @ApiOperation({ summary: 'delete current user' })
   @UseGuards(JwtAuthGuard)
   @Delete()

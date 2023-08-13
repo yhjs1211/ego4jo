@@ -65,7 +65,7 @@ export class BoardController {
     @Param('boardId') boardId: number,
     @Body() data: InviteUserDto,
   ) {
-    return await this.boardService.inviteUser(boardId, data.userId);
+    return await this.boardService.inviteUser(boardId, data.email);
   }
 
   // 내가 초대된 보드 조회
@@ -73,5 +73,22 @@ export class BoardController {
   @UseGuards(JwtAuthGuard)
   async getInvitedBoards(@CurrentUser() user: Users): Promise<any> {
     return await this.boardService.getInvitedBoards(user.id);
+  }
+
+  //보드 상세 정보 조회
+  @Get('/detail/:id')
+  @UseGuards(JwtAuthGuard)
+  async getBoardDetail(@Param('id') id: number) {
+    return await this.boardService.getBoardDetail(id);
+  }
+
+  // 내가 초대된 보드에서 나가기
+  @Delete('invitedBoards/:boardId')
+  @UseGuards(JwtAuthGuard)
+  async deleteInvitedBoard(
+    @Param('boardId') boardId: number,
+    @CurrentUser() user: Users,
+  ) {
+    return await this.boardService.deleteInvitedBoard(boardId, user.id);
   }
 }
