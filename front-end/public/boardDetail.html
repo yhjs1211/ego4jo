@@ -350,11 +350,9 @@
           <div class="card-header">${column.title}</div>
           <ul class="list-group list-group-flush sortable" id="cardsList${column.id}">
           </ul>
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-            <button class="btn btn-primary me-2" id="createCardModalUpButton" data-bs-toggle="modal" data-bs-target="#createCardModal">
-              Create Card
-            </button>
-          </div>
+          <button class="btn btn-primary me-2" id="createCardModalUpButton" data-bs-toggle="modal" data-bs-target="#createCardModal">
+            Create Card
+          </button>
         </div>
       `;
         const container = document.querySelector('.row.justify-content-center');
