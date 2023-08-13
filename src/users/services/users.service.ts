@@ -57,11 +57,11 @@ export class UsersService {
 
     let hashedPassword: string | undefined;
     if (newPassword) {
-      await bcrypt.hash(newPassword, 10);
+      hashedPassword = await bcrypt.hash(newPassword, 10);
     }
 
     await this.usersRepository.updateUser(user, {
-      password: hashedPassword,
+      password: hashedPassword || user.password,
       name: name || user.name,
     });
 
