@@ -37,7 +37,9 @@ export class Board {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToOne(() => Users, (user) => user.boards)
+  @ManyToOne(() => Users, (user) => user.boards, {
+    onDelete: 'CASCADE',
+  })
   user: Users;
 
   @OneToMany(() => User_Board, (userBoard) => userBoard.board)

@@ -78,4 +78,9 @@ export class BoardService {
       order: { columns: { columnNumber: 'asc' } },
     });
   }
+
+  // 내가 초대된 보드에서 나가기
+  async deleteInvitedBoard(boardId: number, userId: number): Promise<any> {
+    return await this.boardRepository.deleteInvitedBoard(boardId, userId);
+  }
 }

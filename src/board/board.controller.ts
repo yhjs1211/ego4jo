@@ -81,4 +81,14 @@ export class BoardController {
   async getBoardDetail(@Param('id') id: number) {
     return await this.boardService.getBoardDetail(id);
   }
+
+  // 내가 초대된 보드에서 나가기
+  @Delete('invitedBoards/:boardId')
+  @UseGuards(JwtAuthGuard)
+  async deleteInvitedBoard(
+    @Param('boardId') boardId: number,
+    @CurrentUser() user: Users,
+  ) {
+    return await this.boardService.deleteInvitedBoard(boardId, user.id);
+  }
 }
