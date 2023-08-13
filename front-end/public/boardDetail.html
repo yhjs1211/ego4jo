@@ -10,6 +10,12 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
+    <style>
+      /* Custom style for modal backdrop */
+      .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    </style>
   </head>
   <body>
     <header class="bg-dark text-light">
@@ -19,7 +25,13 @@
             <h1>Trello</h1>
           </div>
           <div class="col-auto">
+            <!-- Add Column button -->
+            <button class="btn btn-primary me-2" id="addColumnButton">
+              Add Column+
+            </button>
+            <!-- Invite button -->
             <button class="btn btn-primary me-2">Invite</button>
+            <!-- Log Out button -->
             <button
               class="btn btn-primary me-2"
               id="logoutButton"
@@ -32,122 +44,123 @@
       </div>
     </header>
     <div class="container mt-4">
-      <div class="row">
-        <div class="col-md-12 mb-4 bg-white text-dark">
-          <h2 class="text-center mt-3">My Board</h2>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-header">To Do</div>
-            <ul class="list-group list-group-flush sortable" data-list="todo">
-              <li class="list-group-item" draggable="true">Task 1</li>
-              <li class="list-group-item" draggable="true">Task 2</li>
-              <li class="list-group-item" draggable="true">Task 3</li>
-            </ul>
-            <button class="btn btn-success btn-block">Add Card+</button>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-header">In Progress</div>
-            <ul class="list-group list-group-flush sortable">
-              <li class="list-group-item" draggable="true">Task 4</li>
-              <li class="list-group-item" draggable="true">Task 5</li>
-              <li class="list-group-item" draggable="true">Task 6</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-header">Done</div>
-            <ul class="list-group list-group-flush sortable">
-              <li class="list-group-item" draggable="true">Task 7</li>
-              <li class="list-group-item" draggable="true">Task 8</li>
-              <li class="list-group-item" draggable="true">Task 9</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-success btn-block" id="addColumnButton">
-            Add Column+
-          </button>
-        </div>
-      </div>
+      <!-- ... (기타 body 내용) ... -->
     </div>
     <div class="modal" id="addColumnModal">
-      <div class="modal-content">
-        <h2>Add Column</h2>
-        <input type="text" id="columnInput" placeholder="Enter column name" />
-        <button class="btn" id="addColumnConfirmButton">Add</button>
-        <button class="btn" id="addColumnCancelButton">Cancel</button>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Column</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <input
+              type="text"
+              id="columnInput"
+              class="form-control"
+              placeholder="Enter column name"
+            />
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" id="addColumnConfirmButton">
+              Add
+            </button>
+            <button class="btn btn-secondary" data-dismiss="modal">
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <script>
-      const columns = document.querySelectorAll('.sortable');
-      columns.forEach((column) => {
-        new Sortable(column, {
-          group: 'shared',
-          animation: 150,
-          ghostClass: 'blue-background-class',
+      document.addEventListener('DOMContentLoaded', function () {
+        const addColumnButton = document.getElementById('addColumnButton');
+        const addColumnModal = document.getElementById('addColumnModal');
+        const columnInput = document.getElementById('columnInput');
+        const addColumnConfirmButton = document.getElementById(
+          'addColumnConfirmButton',
+        );
+
+        addColumnButton.addEventListener('click', function () {
+          addColumnModal.style.display = 'block';
         });
-      });
 
-      const addColumnButton = document.getElementById('addColumnButton');
-      const addColumnModal = document.getElementById('addColumnModal');
-      const columnInput = document.getElementById('columnInput');
-      const addColumnConfirmButton = document.getElementById(
-        'addColumnConfirmButton',
-      );
-      const addColumnCancelButton = document.getElementById(
-        'addColumnCancelButton',
-      );
+        addColumnModal.addEventListener('hide.bs.modal', function () {
+          columnInput.value = '';
+        });
 
-      addColumnButton.addEventListener('click', () => {
-        addColumnModal.style.display = 'block';
-      });
+        addColumnConfirmButton.addEventListener('click', function () {
+          const columnName = columnInput.value.trim();
+          if (columnName !== '') {
+            const id = getQueryParam('id'); // 쿼리 스트링에서 id 값 가져오기
+            const authToken = getCookie('authToken'); // 쿠키에서 인증 토큰 가져오기
+            addColumn(columnName, id, authToken);
+            addColumnModal.style.display = 'none';
+            columnInput.value = '';
+          }
+        });
 
-      addColumnCancelButton.addEventListener('click', () => {
-        addColumnModal.style.display = 'none';
-        columnInput.value = '';
-      });
-
-      addColumnConfirmButton.addEventListener('click', () => {
-        const columnName = columnInput.value.trim();
-        if (columnName !== '') {
-          const newColumn = document.createElement('div');
-          newColumn.className = 'col-md-3';
-          newColumn.innerHTML = `
-            <div class="card">
-              <div class="card-header">${columnName}</div>
-              <ul class="list-group list-group-flush sortable">
-              </ul>
-            </div>
-          `;
-          const addButtonColumn = document.querySelector('.col-md-2');
-          addButtonColumn.before(newColumn);
-          new Sortable(newColumn.querySelector('.sortable'), {
-            group: 'shared',
-            animation: 150,
-            ghostClass: 'blue-background-class',
+        const closeModalButtons = document.querySelectorAll(
+          "[data-dismiss='modal']",
+        );
+        closeModalButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            const modal = button.closest('.modal');
+            modal.style.display = 'none';
           });
-          addColumnModal.style.display = 'none';
-          columnInput.value = '';
+        });
+
+        window.addEventListener('click', function (event) {
+          if (event.target === addColumnModal) {
+            addColumnModal.style.display = 'none';
+          }
+        });
+
+        async function addColumn(columnName, id, authToken) {
+          try {
+            const response = await fetch(
+              `http://localhost:8080/columns?id=${id}`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${authToken}`, // 쿠키 값을 Authorization 헤더로 전송
+                },
+                body: JSON.stringify({
+                  title: columnName,
+                  boardId: id,
+                }),
+              },
+            );
+
+            if (response.ok) {
+              alert('Column was created successfully.');
+            } else {
+              throw new Error('Column creation failed.');
+            }
+          } catch (error) {
+            alert('Column creation failed.');
+          }
+
+          // 페이지 새로고침
+          location.reload();
+        }
+
+        // 현재 페이지의 쿼리 스트링 파싱 함수
+        function getQueryParam(key) {
+          const urlSearchParams = new URLSearchParams(window.location.search);
+          return urlSearchParams.get(key);
+        }
+
+        // 쿠키 값 가져오는 함수
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
         }
       });
-
-      window.addEventListener('click', (event) => {
-        if (event.target === addColumnModal) {
-          addColumnModal.style.display = 'none';
-          columnInput.value = '';
-        }
-      });
-
-      function logout() {
-        // Implement your logout functionality here
-        console.log('Logged out');
-      }
     </script>
   </body>
 </html>
