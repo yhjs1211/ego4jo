@@ -12,31 +12,44 @@
     <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
   </head>
   <body>
+    <header class="bg-dark text-light">
+      <div class="container py-3">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-auto">
+            <h1>Trello</h1>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-primary me-2">Invite</button>
+            <button
+              class="btn btn-primary me-2"
+              id="logoutButton"
+              onclick="logout()"
+            >
+              Log Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
     <div class="container mt-4">
       <div class="row">
-        <div class="col-md-12 mb-4 bg-dark text-white">
-          <div class="d-flex justify-content-between align-items-center">
-            <h1>Trello</h1>
-            <a href="#" class="btn btn-primary">Invite</a>
-          </div>
+        <div class="col-md-12 mb-4 bg-white text-dark">
           <h2 class="text-center mt-3">My Board</h2>
         </div>
       </div>
       <div class="row justify-content-center">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <div class="card">
             <div class="card-header">To Do</div>
             <ul class="list-group list-group-flush sortable" data-list="todo">
               <li class="list-group-item" draggable="true">Task 1</li>
               <li class="list-group-item" draggable="true">Task 2</li>
               <li class="list-group-item" draggable="true">Task 3</li>
-              <li class="list-group-item">
-                <button class="btn btn-success btn-block">+</button>
-              </li>
             </ul>
+            <button class="btn btn-success btn-block">Add Card+</button>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <div class="card">
             <div class="card-header">In Progress</div>
             <ul class="list-group list-group-flush sortable">
@@ -46,9 +59,9 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <div class="card">
-            <div class="card-header">Review</div>
+            <div class="card-header">Done</div>
             <ul class="list-group list-group-flush sortable">
               <li class="list-group-item" draggable="true">Task 7</li>
               <li class="list-group-item" draggable="true">Task 8</li>
@@ -57,18 +70,18 @@
           </div>
         </div>
         <div class="col-md-2">
-          <div class="card">
-            <div class="card-header">Done</div>
-            <ul class="list-group list-group-flush sortable">
-              <li class="list-group-item" draggable="true">Task 10</li>
-              <li class="list-group-item" draggable="true">Task 11</li>
-              <li class="list-group-item" draggable="true">Task 12</li>
-            </ul>
-          </div>
+          <button class="btn btn-success btn-block" id="addColumnButton">
+            Add Column+
+          </button>
         </div>
-        <div class="col-md-2">
-          <button class="btn btn-success btn-block">Add Column</button>
-        </div>
+      </div>
+    </div>
+    <div class="modal" id="addColumnModal">
+      <div class="modal-content">
+        <h2>Add Column</h2>
+        <input type="text" id="columnInput" placeholder="Enter column name" />
+        <button class="btn" id="addColumnConfirmButton">Add</button>
+        <button class="btn" id="addColumnCancelButton">Cancel</button>
       </div>
     </div>
     <script>
@@ -80,6 +93,61 @@
           ghostClass: 'blue-background-class',
         });
       });
+
+      const addColumnButton = document.getElementById('addColumnButton');
+      const addColumnModal = document.getElementById('addColumnModal');
+      const columnInput = document.getElementById('columnInput');
+      const addColumnConfirmButton = document.getElementById(
+        'addColumnConfirmButton',
+      );
+      const addColumnCancelButton = document.getElementById(
+        'addColumnCancelButton',
+      );
+
+      addColumnButton.addEventListener('click', () => {
+        addColumnModal.style.display = 'block';
+      });
+
+      addColumnCancelButton.addEventListener('click', () => {
+        addColumnModal.style.display = 'none';
+        columnInput.value = '';
+      });
+
+      addColumnConfirmButton.addEventListener('click', () => {
+        const columnName = columnInput.value.trim();
+        if (columnName !== '') {
+          const newColumn = document.createElement('div');
+          newColumn.className = 'col-md-3';
+          newColumn.innerHTML = `
+            <div class="card">
+              <div class="card-header">${columnName}</div>
+              <ul class="list-group list-group-flush sortable">
+              </ul>
+            </div>
+          `;
+          const addButtonColumn = document.querySelector('.col-md-2');
+          addButtonColumn.before(newColumn);
+          new Sortable(newColumn.querySelector('.sortable'), {
+            group: 'shared',
+            animation: 150,
+            ghostClass: 'blue-background-class',
+          });
+          addColumnModal.style.display = 'none';
+          columnInput.value = '';
+        }
+      });
+
+      window.addEventListener('click', (event) => {
+        if (event.target === addColumnModal) {
+          addColumnModal.style.display = 'none';
+          columnInput.value = '';
+        }
+      });
+
+      function logout() {
+        // Implement your logout functionality here
+        console.log('Logged out');
+      }
     </script>
   </body>
 </html>
