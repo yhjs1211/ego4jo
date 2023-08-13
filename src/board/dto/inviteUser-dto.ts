@@ -1,6 +1,6 @@
-import { IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class InviteUserDto {
-  @IsNumber()
-  readonly userId: number;
+  @IsString()
+  readonly email: string;
 }

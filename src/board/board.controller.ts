@@ -65,7 +65,7 @@ export class BoardController {
     @Param('boardId') boardId: number,
     @Body() data: InviteUserDto,
   ) {
-    return await this.boardService.inviteUser(boardId, data.userId);
+    return await this.boardService.inviteUser(boardId, data.email);
   }
 
   // 내가 초대된 보드 조회
