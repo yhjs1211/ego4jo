@@ -60,8 +60,8 @@ export class BoardService {
   }
 
   // 보드에 사용자 초대
-  async inviteUser(boardId: number, userId: number): Promise<any> {
-    return await this.boardRepository.inviteUser(boardId, userId);
+  async inviteUser(boardId: number, email: string): Promise<any> {
+    return await this.boardRepository.inviteUser(boardId, email);
   }
 
   // 내가 초대된 보드 조회
@@ -77,5 +77,10 @@ export class BoardService {
       relations: { columns: { cards: true } },
       order: { columns: { columnNumber: 'asc' } },
     });
+  }
+
+  // 내가 초대된 보드에서 나가기
+  async deleteInvitedBoard(boardId: number, userId: number): Promise<any> {
+    return await this.boardRepository.deleteInvitedBoard(boardId, userId);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, IsNull, Not, Repository } from 'typeorm';
 import { Board } from './entity/board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { Users } from 'src/users/users.entity';
@@ -12,7 +12,7 @@ import { User_Board } from './entity/user_board.entity';
 export class BoardRepository extends Repository<Board> {
   constructor(
     private readonly dataSource: DataSource,
-    // private readonly usersRepository: UsersRepository,
+    private readonly usersRepository: UsersRepository,
     @InjectRepository(User_Board)
     private userBoardRepository: Repository<User_Board>,
   ) {
@@ -23,7 +23,7 @@ export class BoardRepository extends Repository<Board> {
   async createBoard(user: Users, data: CreateBoardDto): Promise<any> {
     return await this.insert({
       title: data.title,
-      background: data.background,
+      // background: data.background,
       description: data.description,
       user,
     });
@@ -38,7 +38,7 @@ export class BoardRepository extends Repository<Board> {
       .select([
         'board.id',
         'board.title',
-        'board.background',
+        // 'board.background',
         'board.description',
         'board.createdAt',
         'board.updatedAt',
@@ -60,7 +60,7 @@ export class BoardRepository extends Repository<Board> {
       .select([
         'board.id',
         'board.title',
-        'board.background',
+        // 'board.background',
         'board.description',
         'board.createdAt',
         'board.updatedAt',
@@ -88,9 +88,11 @@ export class BoardRepository extends Repository<Board> {
   }
 
   // 보드에 사용자 초대
-  async inviteUser(boardId: number, userId: number): Promise<any> {
+  async inviteUser(boardId: number, email: string): Promise<any> {
+    const user = await this.usersRepository.findUserByEmail(email);
+
     return await this.userBoardRepository.insert({
-      userId,
+      userId: user.id,
       boardId,
     });
   }
@@ -102,5 +104,10 @@ export class BoardRepository extends Repository<Board> {
       relations: { board: true },
     });
     return board;
+  }
+
+  // 내가 초대된 보드에서 나가기
+  async deleteInvitedBoard(boardId: number, userId: number): Promise<any> {
+    return await this.userBoardRepository.delete({ userId, boardId });
   }
 }

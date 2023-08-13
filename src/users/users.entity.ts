@@ -27,7 +27,7 @@ export class Users {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   imgUrl: string;
 
   @CreateDateColumn()
@@ -43,9 +43,9 @@ export class Users {
   @JoinTable({ name: 'users_cards' })
   cards: Card[];
 
-  @OneToMany(() => Board, (board) => board.user)
+  @OneToMany(() => Board, (board) => board.user, { cascade: true })
   boards: Board[];
 
-  @OneToMany(() => User_Board, (userBoard) => userBoard.user)
+  @OneToMany(() => User_Board, (userBoard) => userBoard.user, { cascade: true })
   userBoard: User_Board[];
 }
