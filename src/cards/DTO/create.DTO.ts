@@ -5,7 +5,6 @@ export class CreateCardDTO extends PickType(Card, [
   'title',
   'description',
   'deadline',
-  'color',
   'cardNum',
   'columnId',
 ] as const) {}
