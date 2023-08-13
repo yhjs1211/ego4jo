@@ -68,4 +68,14 @@ export class BoardService {
   async getInvitedBoards(userId: number): Promise<any> {
     return await this.boardRepository.getInvitedBoards(userId);
   }
+
+  // 보드 상세 정보 조회
+  async getBoardDetail(id: number) {
+    return await this.boardRepository.find({
+      where: { id, deletedAt: null },
+      select: ['id', 'title'],
+      relations: { columns: { cards: true } },
+      order: { columns: { columnNumber: 'asc' } },
+    });
+  }
 }

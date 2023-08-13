@@ -74,4 +74,11 @@ export class BoardController {
   async getInvitedBoards(@CurrentUser() user: Users): Promise<any> {
     return await this.boardService.getInvitedBoards(user.id);
   }
+
+  //보드 상세 정보 조회
+  @Get('/detail/:id')
+  @UseGuards(JwtAuthGuard)
+  async getBoardDetail(@Param('id') id: number) {
+    return await this.boardService.getBoardDetail(id);
+  }
 }

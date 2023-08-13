@@ -3,8 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
-  Put,
   Res,
   UploadedFile,
   UseFilters,
@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserUpdateDto } from '../dto/users.update.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
@@ -26,6 +25,7 @@ import { UserCheckDto } from 'src/auth/dto/users.check.dto';
 import { AwsService } from 'src/aws.service';
 import { UserSignUpDto } from '../dto/users.signUp.dto';
 import { Response } from 'express';
+import { UserUpdateRequestDto } from '../dto/users.update.request.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -69,13 +69,13 @@ export class UsersController {
     return this.authService.userCheck(user.id, body);
   }
 
-  // PUT. http://localhost:8080/users
+  // PATCH. http://localhost:8080/users
   @ApiOperation({ summary: 'update current user' })
   @UseGuards(JwtAuthGuard)
-  @Put()
+  @Patch()
   async updateCurrentUser(
     @CurrentUser() user: Users,
-    @Body() body: UserUpdateDto,
+    @Body() body: Partial<UserUpdateRequestDto>,
   ) {
     return await this.usersSevice.updateUser(user.id, body);
   }
