@@ -17,6 +17,32 @@
 <hr>
 <ul>
   <li>
+    <h4>User</h4>
+    <ul>
+      <li>
+        <p>POST '/users' - sign-up</p>
+      </li>
+      <li>
+        <p>POST '/users/login' - log-in</p>
+      </li>
+      <li>
+        <p>GET '/users' - get current user</p>
+      </li>
+      <li>
+        <p>PATCH '/users' - update current user</p>
+      </li>
+      <li>
+        <p>DELETE '/users' - delete current user</p>
+      </li>
+      <li>
+        <p>POST '/users/image' - upload user profile image</p>
+      </li>
+      <li>
+        <p>GET '/users/image' - get user profile image</p>
+      </li>
+    </ul>
+  </li>
+  <li>
     <h4>Card</h4>
     <ul>
       <li>
