@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -24,6 +25,12 @@ export class ColumnsController {
   @ApiResponse({ status: 200, description: 'OK' })
   async getColumns() {
     return await this.columnsService.getColumns();
+  }
+
+  @Get('/:columnId')
+  @ApiOperation({ summary: 'Get Column Detail By ID' })
+  async getColumnsById(@Param('columnId', ParseIntPipe) id: number) {
+    return await this.columnsService.getColumnDetailById(id);
   }
 
   @Post()

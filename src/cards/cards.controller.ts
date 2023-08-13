@@ -67,6 +67,8 @@ export class CardsController {
     @Body() body: UpdateCardDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
+    console.log(body);
+
     await this.cardService.updateCard(body, id);
     return;
   }
