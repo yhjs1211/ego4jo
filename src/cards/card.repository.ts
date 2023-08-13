@@ -20,9 +20,11 @@ export class CardRepository extends Repository<Card> {
 
   async createCard(data: CreateCardDTO): Promise<Card> {
     const card = this.create(data);
-    this.findAndCount({ where: { columnId: data.columnId } }).then((data) => {
-      this.merge(card, { cardNum: data[1] + 1 });
-    });
+    await this.findAndCount({ where: { columnId: data.columnId } }).then(
+      (data) => {
+        this.merge(card, { cardNum: data[1] + 1 });
+      },
+    );
 
     const createdCard = await this.save(card);
     return createdCard;
