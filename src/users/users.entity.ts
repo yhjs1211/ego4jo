@@ -27,7 +27,7 @@ export class Users {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   imgUrl: string;
 
   @CreateDateColumn()
