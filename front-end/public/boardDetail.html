@@ -3,20 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trello-like Board</title>
+    <title>Trello</title>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&family=Roboto:wght@500&display=swap"
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
     />
+    <!-- bootstrap css -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <!-- ajax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <!-- css -->
+    <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
-    <style>
-      /* Custom style for modal backdrop */
-      .modal-backdrop {
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-    </style>
   </head>
+
   <body>
     <header class="bg-dark text-light">
       <div class="container py-3">
@@ -25,13 +33,14 @@
             <h1>Trello</h1>
           </div>
           <div class="col-auto">
-            <!-- Add Column button -->
-            <button class="btn btn-primary me-2" id="addColumnButton">
-              Add Column+
+            <button
+              class="btn btn-primary me-2"
+              id="addColumnButton"
+              data-bs-toggle="modal"
+              data-bs-target="#addColumnModal"
+            >
+              Add Column
             </button>
-            <!-- Invite button -->
-            <button class="btn btn-primary me-2">Invite</button>
-            <!-- Log Out button -->
             <button
               class="btn btn-primary me-2"
               id="logoutButton"
@@ -43,124 +52,187 @@
         </div>
       </div>
     </header>
+
     <div class="container mt-4">
-      <!-- ... (기타 body 내용) ... -->
+      <div class="row justify-content-center">
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">To Do</div>
+            <ul class="list-group list-group-flush sortable" data-list="todo">
+              <li class="list-group-item" draggable="true">Task 1</li>
+              <li class="list-group-item" draggable="true">Task 2</li>
+              <li class="list-group-item" draggable="true">Task 3</li>
+            </ul>
+            <!-- <button class="btn btn-success btn-block">Add Card+</button> -->
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">In Progress</div>
+            <ul class="list-group list-group-flush sortable">
+              <li class="list-group-item" draggable="true">Task 4</li>
+              <li class="list-group-item" draggable="true">Task 5</li>
+              <li class="list-group-item" draggable="true">Task 6</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">Done</div>
+            <ul class="list-group list-group-flush sortable">
+              <li class="list-group-item" draggable="true">Task 7</li>
+              <li class="list-group-item" draggable="true">Task 8</li>
+              <li class="list-group-item" draggable="true">Task 9</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="modal" id="addColumnModal">
+
+    <!-- Add Column Modal -->
+    <div
+      class="modal fade"
+      id="addColumnModal"
+      tabindex="-1"
+      aria-labelledby="addColumnModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Add Column</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
+            <h5 class="modal-title" id="inviteModalLabel">Add Column</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
-            <input
-              type="text"
-              id="columnInput"
-              class="form-control"
-              placeholder="Enter column name"
-            />
+            <form>
+              <div class="mb-3">
+                <label for="columnName"></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="columnName"
+                  placeholder="column name"
+                />
+              </div>
+            </form>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" id="addColumnConfirmButton">
-              Add
-            </button>
-            <button class="btn btn-secondary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="addColumnCancelButton"
+              data-bs-dismiss="modal"
+            >
               Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="addColumnConfirmButton"
+            >
+              Add Column
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- bootstrap js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const addColumnButton = document.getElementById('addColumnButton');
-        const addColumnModal = document.getElementById('addColumnModal');
-        const columnInput = document.getElementById('columnInput');
-        const addColumnConfirmButton = document.getElementById(
-          'addColumnConfirmButton',
-        );
+      window.onload = function () {
+        if (!getCookie()) {
+          window.location.href =
+            'http://127.0.0.1:5500/front-end/public/index.html';
+        }
+      };
 
-        addColumnButton.addEventListener('click', function () {
-          addColumnModal.style.display = 'block';
+      const addColumnModal = new bootstrap.Modal(
+        document.getElementById('addColumnModal'),
+      );
+
+      function closeModal() {
+        addColumnModal.hide();
+      }
+
+      const columns = document.querySelectorAll('.sortable');
+      columns.forEach((column) => {
+        new Sortable(column, {
+          group: 'shared',
+          animation: 150,
+          ghostClass: 'blue-background-class',
         });
+      });
 
-        addColumnModal.addEventListener('hide.bs.modal', function () {
-          columnInput.value = '';
-        });
+      const columnNameInput = document.getElementById('columnName');
 
-        addColumnConfirmButton.addEventListener('click', function () {
-          const columnName = columnInput.value.trim();
-          if (columnName !== '') {
-            const id = getQueryParam('id'); // 쿼리 스트링에서 id 값 가져오기
-            const authToken = getCookie('authToken'); // 쿠키에서 인증 토큰 가져오기
-            addColumn(columnName, id, authToken);
-            addColumnModal.style.display = 'none';
-            columnInput.value = '';
-          }
-        });
+      const addColumnConfirmButton = document.getElementById(
+        'addColumnConfirmButton',
+      );
+      const addColumnCancelButton = document.getElementById(
+        'addColumnCancelButton',
+      );
 
-        const closeModalButtons = document.querySelectorAll(
-          "[data-dismiss='modal']",
-        );
-        closeModalButtons.forEach(function (button) {
-          button.addEventListener('click', function () {
-            const modal = button.closest('.modal');
-            modal.style.display = 'none';
+      addColumnCancelButton.addEventListener('click', () => {
+        closeModal();
+        columnNameInput.value = '';
+      });
+
+      addColumnConfirmButton.addEventListener('click', () => {
+        const columnName = columnNameInput.value.trim();
+        if (columnName !== '') {
+          console.log(columnName);
+          const newColumn = document.createElement('div');
+          newColumn.className = 'col-md-3';
+          newColumn.innerHTML = `
+            <div class="card">
+              <div class="card-header">${columnName}</div>
+              <ul class="list-group list-group-flush sortable">
+              </ul>
+            </div>
+          `;
+
+          const container = document.querySelector(
+            '.row.justify-content-center',
+          );
+          container.appendChild(newColumn);
+
+          new Sortable(newColumn.querySelector('.sortable'), {
+            group: 'shared',
+            animation: 150,
+            ghostClass: 'blue-background-class',
           });
-        });
 
-        window.addEventListener('click', function (event) {
-          if (event.target === addColumnModal) {
-            addColumnModal.style.display = 'none';
-          }
-        });
-
-        async function addColumn(columnName, id, authToken) {
-          try {
-            const response = await fetch(
-              `http://localhost:8080/columns?id=${id}`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${authToken}`, // 쿠키 값을 Authorization 헤더로 전송
-                },
-                body: JSON.stringify({
-                  title: columnName,
-                  boardId: id,
-                }),
-              },
-            );
-
-            if (response.ok) {
-              alert('Column was created successfully.');
-            } else {
-              throw new Error('Column creation failed.');
-            }
-          } catch (error) {
-            alert('Column creation failed.');
-          }
-
-          // 페이지 새로고침
-          location.reload();
-        }
-
-        // 현재 페이지의 쿼리 스트링 파싱 함수
-        function getQueryParam(key) {
-          const urlSearchParams = new URLSearchParams(window.location.search);
-          return urlSearchParams.get(key);
-        }
-
-        // 쿠키 값 가져오는 함수
-        function getCookie(name) {
-          const value = `; ${document.cookie}`;
-          const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop().split(';').shift();
+          closeModal();
+          columnNameInput.value = '';
         }
       });
+
+      function logout() {
+        try {
+          deleteCookie();
+          alert('사용자 인증 해제 성공');
+          window.location.href =
+            'http://127.0.0.1:5500/front-end/public/index.html';
+        } catch {
+          alert('사용자 인증 해제 실패');
+        }
+      }
+
+      function deleteCookie() {
+        document.cookie =
+          'Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;';
+      }
     </script>
   </body>
 </html>
