@@ -56,6 +56,7 @@ export class Card {
     type: 'varchar',
     length: 30,
     nullable: true,
+    default: '#ffffff',
   })
   color: string;
 

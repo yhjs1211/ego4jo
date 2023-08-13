@@ -14,3 +14,8 @@
 #deleteCommentBtn {
   float: right;
 }
+
+#card {
+  position: relative;
+  left: 25%;
+}
