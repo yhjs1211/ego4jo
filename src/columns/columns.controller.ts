@@ -63,7 +63,7 @@ export class ColumnsController {
   })
   async deleteColumns(
     @Param('id') columnsId: number,
-    @Body() data: DeleteColumnsDto,
+    // @Body() data: DeleteColumnsDto,
   ) {
     return await this.columnsService.deleteColumns(columnsId);
   }
