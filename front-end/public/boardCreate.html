@@ -1,36 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello</title>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- bootstrap css -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <!-- css -->
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/boardCreate.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trello</title>
-  <!-- google font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&family=Roboto:wght@500&display=swap"
-    rel="stylesheet">
-  <!-- bootstrap css -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
-  <!-- css -->
-  <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/boardCreate.css">
-</head>
-
-<body>
-  <header class="bg-dark text-light">
-    <div class="container py-3">
-      <div class="row justify-content-between align-items-center">
-        <div class="col-auto">
-          <h1>Trello</h1>
+  <body>
+    <header class="bg-dark text-light">
+      <div class="container py-3">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-auto">
+            <h1>Trello</h1>
+          </div>
+          <div class="col-auto">
+            <button
+              class="btn btn-primary me-2"
+              data-bs-toggle="modal"
+              data-bs-target="#createModal"
+            >
+              Create
+            </button>
+            <button
+              class="btn btn-primary me-2"
+              id="logoutButton"
+              onclick="logout()"
+            >
+              Log Out
+            </button>
+          </div>
         </div>
-        <div class="col-auto">
-          <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
-          <button class="btn btn-primary me-2" id="logoutButton" onclick="logout()">Log Out</button>
+      </div>
+    </header>
+
+    <!-- Create Modal -->
+    <div
+      class="modal fade"
+      id="createModal"
+      tabindex="-1"
+      aria-labelledby="createModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createModalLabel">Create New Board</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <!-- <div class="mb-3">
+                <label for="backgroundImage">background:</label>
+                <input
+                  type="file"
+                  class="form-control-file"
+                  id="backgroundImage"
+                />
+              </div> -->
+              <div class="mb-3">
+                <label for="boardTitle"></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="boardTitle"
+                  placeholder="title"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="boardDescription"></label>
+                <textarea
+                  class="form-control"
+                  id="boardDescription"
+                  rows="5"
+                  placeholder="description"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="createBoard()"
+            >
+              Create
+            </button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Update Modal -->
+    <div
+      class="modal fade"
+      id="updateModal"
+      tabindex="-1"
+      aria-labelledby="updateModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateModalLabel">Update Board</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="boardTitleUpdate">Title:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="boardTitleUpdate"
+                  placeholder="title"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="boardDescriptionUpdate">Description:</label>
+                <textarea
+                  class="form-control"
+                  id="boardDescriptionUpdate"
+                  rows="5"
+                  placeholder="description"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="updateBoardButton"
+            >
+              Update
+            </button>
+          </div>
   </header>
 
   <!-- Edit Modal -->
@@ -125,34 +270,54 @@
       </div>
     </div>
   </div>
+        </div>
+      </div>
+    </div>
 
-  <!-- Create Modal -->
-  <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createModalLabel">Create New Board</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="boardTitle"></label>
-              <input type="text" class="form-control" id="boardTitle" placeholder="title" />
-            </div>
-            <div class="mb-3">
-              <label for="boardDescription"></label>
-              <textarea class="form-control" id="boardDescription" rows="5" placeholder="description"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" class="btn btn-primary" onclick="">
-            Create
-          </button>
+    <!-- Invite Modal -->
+    <div
+      class="modal fade"
+      id="inviteModal"
+      tabindex="-1"
+      aria-labelledby="inviteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="inviteModalLabel">Invite User</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="inviteEmail">Email:</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="inviteEmail"
+                  placeholder="Enter email"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" id="inviteButton">
+              Invite
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -178,27 +343,20 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-6 text-md-right">
-        <h3>My Boards</h3>
-        <ul class="list-group">
-          <li class="list-group-item">김재용</li>
-          <li class="list-group-item">김태진</li>
-        </ul>
+        <div class="col-md-6 text-md-right">
+          <h3>My Boards</h3>
+          <ul class="list-group" id="myBoardsList"></ul>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <h3>Invited Boards</h3>
+          <ul class="list-group" id="invitedBoardsList"></ul>
+        </div>
       </div>
     </div>
-    <div class="row mt-4">
-      <div class="col-md-6"></div>
-      <div class="col-md-6">
-        <h3>Invited Boards</h3>
-        <ul class="list-group">
-          <li class="list-group-item">정영훈</li>
-          <li class="list-group-item">최성구</li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
   <!-- bootstrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
@@ -219,6 +377,8 @@
       }
       getUserImage();
       getUserInfo();
+      fetchBoards();
+        fetchInvitedBoards(); // Fetch and display invited boards
     };
 
     function logout() {
@@ -231,26 +391,215 @@
       };
     }
 
-    function getUserInfo() {
-      fetch("http://localhost:8080/users", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": getCookie(),
-        },
-        credentials: "include",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const userNameElement = document.getElementById("user-name");
-          userNameElement.textContent = data.data.name;
-          const userEmailElement = document.getElementById("user-email");
-          userEmailElement.textContent = data.data.email;
+      function logout() {
+        try {
+          deleteCookie();
+          alert('사용자 인증 해제 성공');
+          window.location.href =
+            'http://127.0.0.1:5500/front-end/public/index.html';
+        } catch {
+          alert('사용자 인증 해제 실패');
+        }
+      }
+
+      function getUserInfo() {
+        fetch('http://localhost:8080/users', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: getCookie(),
+          },
+          credentials: 'include',
         })
-        .catch((error) => {
-          console.error("this is error =>", error);
+          .then((response) => response.json())
+          .then((data) => {
+            const userNameElement = document.getElementById('user-name');
+            userNameElement.textContent = data.data.name;
+            const userEmailElement = document.getElementById('user-email');
+            userEmailElement.textContent = data.data.email;
+          })
+          .catch((error) => {
+            console.error('this is error =>', error);
+          });
+      }
+
+      function getCookie() {
+        const cookie = decodeURIComponent(document.cookie);
+        const [name, value] = cookie.split('=');
+        return value;
+      }
+
+      function deleteCookie() {
+        document.cookie =
+          'Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;';
+      }
+
+      function createBoard() {
+        const boardTitle = document.getElementById('boardTitle').value;
+        const boardDescription =
+          document.getElementById('boardDescription').value;
+
+        const authToken = getCookie();
+
+        const data = {
+          title: boardTitle,
+          description: boardDescription,
+          // ... other properties you might want to include ...
+        };
+
+        fetch('http://localhost:8080/boards', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: authToken,
+          },
+          credentials: 'include',
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response as needed
+            alert('보드가 생성되었습니다.');
+            location.reload();
+            console.log('Board created successfully:', data);
+          })
+          .catch((error) => {
+            alert('보드가 생성되었습니다.');
+            location.reload();
+            console.error('Error creating board:', error);
+          });
+      }
+
+      function fetchBoards() {
+        fetch('http://localhost:8080/boards/createdBoards', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: getCookie(),
+          },
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const myBoardsList = document.getElementById('myBoardsList');
+
+            // 기존 목록 비우기
+            myBoardsList.innerHTML = '';
+
+            // 보드 목록을 동적으로 생성
+            data.forEach((board) => {
+              const listItem = document.createElement('li');
+              listItem.className =
+                'list-group-item d-flex justify-content-between align-items-center';
+              listItem.id = board.id;
+
+              // 보드 이름 텍스트 추가
+              const boardText = document.createElement('span');
+              boardText.textContent = board.title;
+              listItem.appendChild(boardText);
+
+              // 버튼 추가
+              const buttons = document.createElement('div');
+              buttons.className = 'btn-group';
+
+              // Invite 버튼
+              const inviteButton = document.createElement('button');
+              inviteButton.className = 'btn btn-success me-1';
+              inviteButton.textContent = 'Invite';
+              inviteButton.onclick = function () {
+                showInviteModal(board.id); // Invite 버튼 클릭 시 showInviteModal 함수 호출
+              };
+              buttons.appendChild(inviteButton);
+
+              // Update 버튼
+              const updateButton = document.createElement('button');
+              updateButton.className = 'btn btn-warning me-1';
+              updateButton.textContent = 'Update';
+              updateButton.addEventListener('click', function () {
+                showUpdateModal(board.id); // Update 버튼 클릭 시 showUpdateModal 함수 호출
+              });
+              buttons.appendChild(updateButton);
+
+              // Delete 버튼
+              const deleteButton = document.createElement('button');
+              deleteButton.className = 'btn btn-danger';
+              deleteButton.textContent = 'Delete';
+              deleteButton.addEventListener('click', function () {
+                showDeleteConfirmation(board.id); // Delete 버튼 클릭 시 showDeleteConfirmation 함수 호출
+              });
+              buttons.appendChild(deleteButton);
+
+              listItem.appendChild(buttons);
+
+              myBoardsList.appendChild(listItem);
+            });
+          })
+          .catch((error) => {
+            console.error('Error fetching boards:', error);
+          });
+      }
+
+      // Fetch and display invited boards
+      function fetchInvitedBoards() {
+        const authToken = getCookie();
+        const invitedBoardsList = document.getElementById('invitedBoardsList');
+
+        fetch('http://localhost:8080/boards/invitedBoards', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: authToken,
+          },
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Clear existing list
+            invitedBoardsList.innerHTML = '';
+
+            // Create and append list items dynamically
+            data.forEach((board) => {
+              const listItem = document.createElement('li');
+              listItem.className = 'list-group-item';
+              listItem.textContent = board.board.title;
+
+              invitedBoardsList.appendChild(listItem);
+            });
+          })
+          .catch((error) => {
+            console.error('Error fetching invited boards:', error);
+          });
+      }
+
+      // Update 버튼 클릭 시
+      function showUpdateModal(boardId) {
+        const updateModal = new bootstrap.Modal(
+          document.getElementById('updateModal'),
+        );
+        const boardTitleInput = document.getElementById('boardTitleUpdate');
+        const boardDescriptionInput = document.getElementById(
+          'boardDescriptionUpdate',
+        );
+
+        // 모달 내용 초기화
+        boardTitleInput.value = '';
+        boardDescriptionInput.value = '';
+
+        // Update 버튼 클릭 시 이벤트 처리
+        const updateBoardButton = document.getElementById('updateBoardButton');
+        updateBoardButton.addEventListener('click', function () {
+          const updatedTitle = boardTitleInput.value;
+          const updatedDescription = boardDescriptionInput.value;
+
+          if (updatedTitle && updatedDescription) {
+            updateBoard(boardId, updatedTitle, updatedDescription);
+          } else {
+            alert('Title and Description cannot be empty.');
+          }
         });
-    }
+        // 모달 보여주기
+        updateModal.show();
+      }
 
     function updateUserInfo() {
       const userData = {
@@ -373,7 +722,110 @@
       editModal.hide();
       createModal.hide();
     }
-  </script>
-</body>
+    
+   function updateBoard(boardId, title, description) {
+        const authToken = getCookie();
+        const data = {
+          title: title,
+          description: description,
+        };
 
+        fetch(`http://localhost:8080/boards/${boardId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: authToken,
+          },
+          credentials: 'include',
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response as needed
+            alert('수정되었습니다.');
+            location.reload();
+            console.log('Board updated successfully:', data);
+          })
+          .catch((error) => {
+            alert('수정에 실패하였습니다.');
+            location.reload();
+            console.error('Error updating board:', error);
+          });
+      }
+
+      // Delete 버튼 클릭 시
+      function showDeleteConfirmation(boardId) {
+        if (confirm('보드를 삭제하시겠습니까?')) {
+          const authToken = getCookie();
+
+          fetch(`http://localhost:8080/boards/${boardId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: authToken,
+            },
+            credentials: 'include',
+          })
+            .then((response) => {
+              alert('삭제되었습니다.');
+              location.reload();
+            })
+            .catch((error) => {
+              alert('보드 삭제에 실패하였습니다.');
+              location.reload();
+              console.error('Error deleting board:', error);
+            });
+        }
+      }
+
+      // 모달 보여주는 함수
+      function showInviteModal(boardId) {
+        const inviteModal = new bootstrap.Modal(
+          document.getElementById('inviteModal'),
+        );
+        inviteModal.show();
+
+        // Invite 버튼의 이벤트 핸들러 설정
+        setupInviteButton(boardId);
+      }
+
+      // inviteButton의 onclick 핸들러를 추가한 함수
+      function setupInviteButton(boardId) {
+        const inviteButton = document.getElementById('inviteButton');
+        inviteButton.onclick = function () {
+          const emailInput = document.getElementById('inviteEmail');
+          const email = emailInput.value;
+          inviteUserToBoard(boardId, email);
+        };
+      }
+
+      // invite 모달 내에서 사용자를 보드에 초대하는 함수
+      function inviteUserToBoard(boardId, email) {
+        const authToken = getCookie();
+        const data = {
+          email: email,
+        };
+
+        fetch(`http://localhost:8080/boards/invite/${boardId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: authToken,
+          },
+          credentials: 'include',
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert('보드에 초대되었습니다.');
+            location.reload();
+          })
+          .catch((error) => {
+            alert('보드 초대에 실패하였습니다.');
+            location.reload();
+            console.error('Error inviting user to board:', error);
+          });
+      }
+    </script>
+  </body>
 </html>

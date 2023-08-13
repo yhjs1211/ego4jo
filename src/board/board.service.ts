@@ -60,8 +60,8 @@ export class BoardService {
   }
 
   // 보드에 사용자 초대
-  async inviteUser(boardId: number, userId: number): Promise<any> {
-    return await this.boardRepository.inviteUser(boardId, userId);
+  async inviteUser(boardId: number, email: string): Promise<any> {
+    return await this.boardRepository.inviteUser(boardId, email);
   }
 
   // 내가 초대된 보드 조회
