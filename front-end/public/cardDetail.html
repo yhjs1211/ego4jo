@@ -1,64 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trello Card Details</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="./css/cardDetail.css" />
-  </head>
-  <body>
-    <header class="bg-dark text-light">
-      <div class="container py-3">
-        <div class="row justify-content-between align-items-center">
-          <div class="col-auto">
-            <h1>Trello</h1>
-          </div>
-          <div class="col-auto">
-            <button class="btn btn-secondary" onclick="logout()">Logout</button>
-          </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trello</title>
+  <!-- google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&family=Roboto:wght@500&display=swap"
+    rel="stylesheet" />
+  <!-- bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+  <!-- css -->
+  <link rel="stylesheet" href="./css/reset.css" />
+  <link rel="stylesheet" href="./css/cardDetail.css" />
+</head>
+
+<body>
+  <header class="bg-dark text-light">
+    <div class="container py-3">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+          <h1>Trello</h1>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary me-2" onclick="goToBoardDetail()">
+            Column
+          </button>
+          <button class="btn btn-primary me-2" onclick="logout()">Logout</button>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <div class="card-container row">
-      <div class="card col-md-6" id="card">
-        <div class="card-header" align="center">Card Details</div>
-        <div class="card-body" id="cardBody" align="left">
+  <div class="card-container row">
+    <div class="card col-md-6" id="card">
+      <div class="card-header d-flex justify-content-between align-items-center" text-align="center">
+        <h5>Card Details</h5>
+        <button class="btn btn-primary float-right" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+          Edit
+        </button>
+      </div>
+      <div class="card-body" id="cardBody" text-align="left">
+        <div class="entity-container mt-4" style="text-align: left;">
           <h5 class="card-title" id="card-title"></h5>
+        </div>
+        <div class=" entity-container mt-4" style="text-align: left;">
           <p class="card-text" id="card-description"></p>
+        </div>
+        <div class="entity-container mt-4" style="text-align: left;">
           <p class="card-text" id="card-deadline"></p>
         </div>
+      </div>
+      <div class="entity-container mt-4" style="text-align: left;">
         <div class="card-foot row">
-          <div id="commentInput" class="col-md-11">
-            <label for="comment">댓글 :&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input
-              type="text"
-              size="50"
-              name="comment"
-              id="comment"
-              placeholder="Input comment"
-            />
-            <button
-              class="btn btn-success"
-              type="button"
-              onclick="createCommentForCard()"
-            >
-              create
-            </button>
-            <button
-              class="btn btn-primary"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasScrolling"
-              aria-controls="offcanvasScrolling"
-            >
-              Edit
+          <div id="commentInput" class="col-md-11" style="display: flex; align-items: center;">
+            <label for="comment" style="margin-right: 10px;">Comment:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="text" class="form-control" style="width: 50%; margin-right: 10px;" size="50" name="comment"
+              id="comment" placeholder="Input comment" />
+            <button class="btn btn-success" type="button" onclick="createCommentForCard()" style="margin-right: 10px;">
+              Create
             </button>
           </div>
           <div class="comment-container">
@@ -67,107 +71,65 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div
-      class="offcanvas offcanvas-end"
-      data-bs-scroll="true"
-      data-bs-backdrop="false"
-      tabindex="-1"
-      id="offcanvasScrolling"
-      aria-labelledby="offcanvasScrollingLabel"
-    >
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
-          ✨ Comment Update ✨
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="form-group">
-          <label for="titleInput">Title</label>
-          <input
-            type="text"
-            class="form-control"
-            id="titleInput"
-            placeholder="Please write title to be changed"
-          />
-        </div>
-        <div class="form-group">
-          <label for="descriptionInput">Description</label>
-          <textarea
-            class="form-control"
-            placeholder="Card Description"
-            id="descriptionInput"
-            rows="3"
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="deadlineInput">Deadline</label>
-          <input type="date" class="form-control" id="deadlineInput" />
-        </div>
-        <button
-          type="button"
-          onclick="updateCard()"
-          class="btn btn-warning"
-          id="updateBtn"
-        >
-          변경
-        </button>
-        <br />
-        <div class="form-group">
-          <label for="colorInput">Color</label>
-          <input
-            type="color"
-            class="form-control"
-            id="colorInput"
-            value="#ffffff"
-          />
-          <button
-            type="button"
-            onclick="updateCardColor()"
-            class="btn btn-danger"
-            id="updateBtn"
-          >
-            변경
-          </button>
-        </div>
-        <br />
-        <div class="form-group">
-          <label for="memberInput">Member</label>
-          <input
-            type="text"
-            class="form-control"
-            id="memberInput"
-            placeholder="Please write to add member email on card"
-          />
-          <button
-            type="button"
-            onclick="updateCardMember()"
-            class="btn btn-success"
-            id="updateBtn"
-          >
-            변경
-          </button>
-        </div>
-      </div>
+  <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+    id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
+        ✨ Card Update ✨
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+    <div class="offcanvas-body">
+      <div class="form-group" style="padding: 20px;">
+        <label for="titleInput" style="padding-bottom: 20px;">Title</label>
+        <input type="text" class="form-control" id="titleInput" placeholder="Write title to be changed" />
+      </div>
+      <div class="form-group" style="padding: 20px;">
+        <label for="descriptionInput" style="padding-bottom: 20px;">Description</label>
+        <textarea class="form-control" placeholder="Write card description" id="descriptionInput" rows="3"></textarea>
+      </div>
+      <button type="button" onclick="updateCard()" class="btn btn-primary" id="updateBtn">
+        Edit
+      </button>
+      <br />
+      <div class="form-group" style="padding: 20px;">
+        <label for="deadlineInput" style="padding-bottom: 20px;">Deadline</label>
+        <input type="date" class="form-control" id="deadlineInput" />
+      </div>
+      <button type="button" onclick="updateCardDeadline()" class="btn btn-warning" id="updateBtn">
+        Set Deadline
+      </button>
+      <br />
+      <div class="form-group" style="padding: 20px;">
+        <label for="colorInput" style="padding-bottom: 20px;">Color</label>
+        <input type="color" class="form-control" id="colorInput" value="#ffffff" />
+      </div>
+      <button type="button" onclick="updateCardColor()" class="btn btn-danger" id="updateBtn">
+        Set Color
+      </button>
+      <br />
+      <div class="form-group" style="padding: 20px;">
+        <label for="memberInput" style="padding-bottom: 20px;">Member</label>
+        <input type="text" class="form-control" id="memberInput" placeholder="Write to add member email on card" />
+      </div>
+      <button type="button" onclick="updateCardMember()" class="btn btn-success" id="updateBtn">
+        Add member
+      </button>
+    </div>
+  </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script type="text/javascript" src="./js/cardDetail.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
-      integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <!-- js -->
+  <script type="text/javascript" src="./js/cardDetail.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>

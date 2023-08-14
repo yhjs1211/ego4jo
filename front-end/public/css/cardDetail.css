@@ -1,6 +1,75 @@
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+h5 {
+  font-size: 20px;
+}
+
+.entity-container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  padding: 10px;
+  margin-bottom: 20px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* 모서리를 더 둥글게 조정 */
+  background-color: rgb(230, 230, 230);
+}
+
+/* 내부 요소들 사이에 상하 여백을 추가하는 CSS */
+.card-container .card {
+  margin-bottom: 20px; /* 아래로 여백 추가 */
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.card-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  min-height: 80vh; /* 화면 높이에 맞춰 세로 가운데 정렬 */
+}
+
+.card-body {
+  margin-bottom: 10px; /* 아래로 여백 추가 */
+}
+
+/* 추가 된 CSS */
+.card-title {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 100%; /* 카드의 높이만큼 늘려줌 */
+}
+
+
+.card-description,
+.card-deadline {
+  margin-top: 10px; /* 카드 설명과 마감일 사이 여백 추가 */
+}
+
+.card-foot {
+  margin-top: 20px; /* 위로 여백 추가 */
+}
+
+.comment-container {
+  margin-top: 10px; /* 위로 여백 추가 */
+}
+
 #comment-box {
   list-style-type: none;
   padding-bottom: 10px;
+}
+
+.offcanvas {
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 #offcanvasScrolling {

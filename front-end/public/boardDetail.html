@@ -1,399 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trello</title>
-    <!-- google font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&family=Roboto:wght@500&display=swap"
-      rel="stylesheet"
-    />
-    <!-- bootstrap css -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-      crossorigin="anonymous"
-    />
-    <!-- ajax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
-    <!-- css -->
-    <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  </head>
 
-  <body>
-    <header class="bg-dark text-light">
-      <div class="container py-3">
-        <div class="row justify-content-between align-items-center">
-          <div class="col-auto">
-            <h1 id="aaaaaa">Trello</h1>
-          </div>
-          <div class="col-auto">
-            <button
-              class="btn btn-primary me-2"
-              id="addColumnButton"
-              data-bs-toggle="modal"
-              data-bs-target="#addColumnModal"
-            >
-              Add Column
-            </button>
-            <button
-              class="btn btn-primary me-2"
-              id="logoutButton"
-              onclick="logout()"
-            >
-              Log Out
-            </button>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trello</title>
+  <!-- google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&family=Roboto:wght@500&display=swap"
+    rel="stylesheet" />
+  <!-- bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+  <!-- ajax -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+  <!-- css -->
+  <link rel="stylesheet" href="./css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="./css/boardDetail.css" />
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <header class="bg-dark text-light">
+    <div class="container py-3">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+          <h1 id="aaaaaa">Trello</h1>
         </div>
-      </div>
-    </header>
-
-    <div class="container mt-4">
-      <div class="row justify-content-center" id="container"></div>
-    </div>
-
-    <!-- Add Column Modal -->
-    <div
-      class="modal fade"
-      id="addColumnModal"
-      tabindex="-1"
-      aria-labelledby="addColumnModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="inviteModalLabel">Add Column</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="columnName"></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="columnName"
-                  placeholder="column name"
-                />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="addColumnCancelButton"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="addColumnConfirmButton"
-            >
-              Add Column
-            </button>
-          </div>
+        <div class="col-auto">
+          <button class="btn btn-primary me-2" id="addColumnButton" data-bs-toggle="modal"
+            data-bs-target="#addColumnModal">
+            Add Column
+          </button>
+          <button class="btn btn-primary me-2" onclick="goToBoardCreate()">
+            Board
+          </button>
+          <button class="btn btn-primary me-2" id="logoutButton" onclick="logout()">
+            Log Out
+          </button>
         </div>
       </div>
     </div>
+  </header>
 
-    <!-- Edit Position Collapse -->
-    <div class="collapse" id="editPosition">
-      <div class="card collapse-body" style="text-align: center">
-        <label for="selectColumn">Select Column</label>
-        <select id="selectColumn" name="columnId"></select>
-        <label for="selectCard">Select Card</label>
-        <select id="selectCard" name="cardId"></select>
-        <label for="selectPosition">New Position</label>
-        <select id="selectPosition" name="newPosition"></select>
-        <button
-          type="button"
-          class="btn btn-warning"
-          onclick="changePosition()"
-        >
-          change
-        </button>
-      </div>
-    </div>
+  <div class="container mt-4">
+    <div class="row justify-content-center" id="container"></div>
+  </div>
 
-    <!-- Create Card Modal -->
-    <div
-      class="modal fade"
-      id="createCardModal"
-      tabindex="-1"
-      aria-labelledby="createCardModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createModalLabel" onClick="">
-              Create Card
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="cardTitle"></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="cardNameInput"
-                  placeholder="title"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="cardDescription"></label>
-                <textarea
-                  class="form-control"
-                  id="cardDescInput"
-                  rows="5"
-                  placeholder="description"
-                ></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-primary" id="createCardButton">
-              Create Card
-            </button>
-          </div>
+  <!-- Add Column Modal -->
+  <div class="modal fade" id="addColumnModal" tabindex="-1" aria-labelledby="addColumnModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="inviteModalLabel">Add Column</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="columnName"></label>
+              <input type="text" class="form-control" id="columnName" placeholder="column name" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="addColumnCancelButton" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" id="addColumnConfirmButton">
+            Add Column
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Update Card Modal -->
-    <div
-      class="modal fade"
-      id="updateCardModal"
-      tabindex="-1"
-      aria-labelledby="updateCardModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createModalLabel" onClick="">
-              Update Card
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="cardTitle"></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="cardNameUpdateInput"
-                  placeholder="title"
-                />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-primary" id="updateCardButton">
-              Update Card
-            </button>
-          </div>
+  <!-- Edit Position Collapse -->
+  <div class="collapse" id="editPosition">
+    <div class="card collapse-body" style="text-align: center">
+      <label for="selectColumn">Select Column</label>
+      <select id="selectColumn" name="columnId"></select>
+      <label for="selectCard">Select Card</label>
+      <select id="selectCard" name="cardId"></select>
+      <label for="selectPosition">New Position</label>
+      <select id="selectPosition" name="newPosition"></select>
+      <button type="button" class="btn btn-warning" onclick="changePosition()">
+        change
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Card Modal -->
+  <div class="modal fade" id="createCardModal" tabindex="-1" aria-labelledby="createCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel" onClick="">
+            Create Card
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="cardTitle"></label>
+              <input type="text" class="form-control" id="cardNameInput" placeholder="title" />
+            </div>
+            <div class="mb-3">
+              <label for="cardDescription"></label>
+              <textarea class="form-control" id="cardDescInput" rows="5" placeholder="description"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" id="createCardButton">
+            Create Card
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- bootstrap js -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-      crossorigin="anonymous"
-    ></script>
+  <!-- Update Card Modal -->
+  <div class="modal fade" id="updateCardModal" tabindex="-1" aria-labelledby="updateCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel" onClick="">
+            Update Card
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="cardTitle"></label>
+              <input type="text" class="form-control" id="cardNameUpdateInput" placeholder="title" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" id="updateCardButton">
+            Update Card
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-      window.onload = function () {
-        if (!getCookie()) {
-          window.location.href =
-            'http://127.0.0.1:5500/front-end/public/index.html';
-        }
+  <!-- bootstrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
 
+  <script>
+    window.onload = function () {
+      if (!getCookie()) {
+        window.location.href =
+          'http://127.0.0.1:5500/front-end/public/index.html';
+      }
+
+      const id = getQueryParam('id'); // 쿼리 스트링에서 id 값 가져오기
+      const authToken = getCookie(); // 쿠키에서 인증 토큰 가져오기
+
+      fetchColumns(id, authToken);
+    };
+
+    const addColumnModal = new bootstrap.Modal(
+      document.getElementById('addColumnModal'),
+    );
+
+    function closeModal() {
+      addColumnModal.hide();
+    }
+
+    const columns = document.querySelectorAll('.sortable');
+    columns.forEach((column) => {
+      new Sortable(column, {
+        group: 'shared',
+        animation: 150,
+        ghostClass: 'blue-background-class',
+      });
+    });
+
+    const columnNameInput = document.getElementById('columnName');
+
+    const addColumnConfirmButton = document.getElementById(
+      'addColumnConfirmButton',
+    );
+    const addColumnCancelButton = document.getElementById(
+      'addColumnCancelButton',
+    );
+
+    addColumnCancelButton.addEventListener('click', () => {
+      closeModal();
+      columnNameInput.value = '';
+    });
+
+    function logout() {
+      try {
+        deleteCookie();
+        alert('사용자 인증 해제 성공');
+        window.location.href =
+          'http://127.0.0.1:5500/front-end/public/index.html';
+      } catch {
+        alert('사용자 인증 해제 실패');
+      }
+    }
+
+    function deleteCookie() {
+      document.cookie =
+        'Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;';
+    }
+
+    function goToBoardCreate() {
+      window.location.href =
+        'http://127.0.0.1:5500/front-end/public/boardCreate.html'
+    }
+
+    addColumnConfirmButton.addEventListener('click', function () {
+      const columnName = columnNameInput.value.trim();
+      if (columnName !== '') {
         const id = getQueryParam('id'); // 쿼리 스트링에서 id 값 가져오기
         const authToken = getCookie(); // 쿠키에서 인증 토큰 가져오기
-
-        fetchColumns(id, authToken);
-      };
-
-      const addColumnModal = new bootstrap.Modal(
-        document.getElementById('addColumnModal'),
-      );
-
-      function closeModal() {
-        addColumnModal.hide();
-      }
-
-      const columns = document.querySelectorAll('.sortable');
-      columns.forEach((column) => {
-        new Sortable(column, {
-          group: 'shared',
-          animation: 150,
-          ghostClass: 'blue-background-class',
-        });
-      });
-
-      const columnNameInput = document.getElementById('columnName');
-
-      const addColumnConfirmButton = document.getElementById(
-        'addColumnConfirmButton',
-      );
-      const addColumnCancelButton = document.getElementById(
-        'addColumnCancelButton',
-      );
-
-      addColumnCancelButton.addEventListener('click', () => {
-        closeModal();
+        addColumn(columnName, id, authToken);
+        addColumnModal.style.display = 'none';
         columnNameInput.value = '';
-      });
-
-      function logout() {
-        try {
-          deleteCookie();
-          alert('사용자 인증 해제 성공');
-          window.location.href =
-            'http://127.0.0.1:5500/front-end/public/index.html';
-        } catch {
-          alert('사용자 인증 해제 실패');
-        }
       }
+    });
 
-      function deleteCookie() {
-        document.cookie =
-          'Authorization=; expires=Sat, 01 Jan 2000 00:00:00 UTC; path=/;';
-      }
-
-      addColumnConfirmButton.addEventListener('click', function () {
-        const columnName = columnNameInput.value.trim();
-        if (columnName !== '') {
-          const id = getQueryParam('id'); // 쿼리 스트링에서 id 값 가져오기
-          const authToken = getCookie(); // 쿠키에서 인증 토큰 가져오기
-          addColumn(columnName, id, authToken);
-          addColumnModal.style.display = 'none';
-          columnNameInput.value = '';
-        }
-      });
-
-      async function addColumn(columnName, id, authToken) {
-        await fetch(`http://localhost:8080/columns?id=${id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`, // 쿠키 값을 Authorization 헤더로 전송
-          },
-          body: JSON.stringify({
-            title: columnName,
-            boardId: id,
-          }),
+    async function addColumn(columnName, id, authToken) {
+      await fetch(`http://localhost:8080/columns?id=${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`, // 쿠키 값을 Authorization 헤더로 전송
+        },
+        body: JSON.stringify({
+          title: columnName,
+          boardId: id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert('Column was created successfully.');
+          // 페이지 새로고침
+          location.reload();
         })
-          .then((response) => response.json())
-          .then((data) => {
-            alert('Column was created successfully.');
-            // 페이지 새로고침
-            location.reload();
-          })
-          .catch((error) => {
-            alert('Column creation failed.');
-          });
-      }
+        .catch((error) => {
+          alert('Column creation failed.');
+        });
+    }
 
-      async function fetchColumns(id, authToken) {
-        await fetch(`http://localhost:8080/boards/detail/${id}`, {
-          method: 'GET',
-          headers: {
-            Authorization: getCookie(),
-          },
+    async function fetchColumns(id, authToken) {
+      await fetch(`http://localhost:8080/boards/detail/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: getCookie(),
+        },
+      })
+        .then((response) => {
+          return response.json();
         })
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            const columns = data[0].columns;
-            const container = document.getElementById('container');
-            container.innerHTML = ''; // 기존 컬럼 제거
+        .then((data) => {
+          const columns = data[0].columns;
+          const container = document.getElementById('container');
+          container.innerHTML = ''; // 기존 컬럼 제거
 
-            columns.forEach((column) => {
-              const opColumn = document.createElement('option');
-              const selectColumn = document.getElementById('selectColumn');
-              opColumn.setAttribute('value', column.id);
-              opColumn.innerHTML = column.title;
-              selectColumn.appendChild(opColumn);
-              createColumn(column);
-              getCard(column);
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-            alert('Failed to fetch board details.');
+          columns.forEach((column) => {
+            const opColumn = document.createElement('option');
+            const selectColumn = document.getElementById('selectColumn');
+            opColumn.setAttribute('value', column.id);
+            opColumn.innerHTML = column.title;
+            selectColumn.appendChild(opColumn);
+            createColumn(column);
+            getCard(column);
           });
-      }
+        })
+        .catch((error) => {
+          console.error(error);
+          alert('Failed to fetch board details.');
+        });
+    }
 
-      // 쿠키 값 가져오는 함수
-      function getCookie() {
-        const cookie = decodeURIComponent(document.cookie);
-        const [name, value] = cookie.split('=');
-        return value;
-      }
+    // 쿠키 값 가져오는 함수
+    function getCookie() {
+      const cookie = decodeURIComponent(document.cookie);
+      const [name, value] = cookie.split('=');
+      return value;
+    }
 
-      // 현재 페이지의 쿼리 스트링 파싱 함수
-      function getQueryParam(key) {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        return urlSearchParams.get(key);
-      }
+    // 현재 페이지의 쿼리 스트링 파싱 함수
+    function getQueryParam(key) {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      return urlSearchParams.get(key);
+    }
 
-      function createColumn(column) {
-        const newColumn = document.createElement('div');
-        newColumn.className = 'col-md-3';
-        newColumn.innerHTML = `
+    function createColumn(column) {
+      const newColumn = document.createElement('div');
+      newColumn.className = 'col-md-3';
+      newColumn.innerHTML = `
         <div class="card" id="${column.id}">
           <div class="card-header">${column.title}
             <div style="text-align: center; margin-top: 10px; margin-bottom: 10px;">
-              <button class="btn btn-primary me-2 btn-dark" style="font-size: 10px;" id="updateCardModalUpButton" data-bs-toggle="modal" data-bs-target="#updateCardModal">Edit</button>
-              <button class="btn btn-primary me-2 btn-dark" style="font-size: 10px;" id="deleteCardButton">Delete</button>
+              <button class="btn btn-primary me-2 btn-dark" style="font-size: 12px;" id="updateCardModalUpButton" data-bs-toggle="modal" data-bs-target="#updateCardModal">Edit</button>
+              <button class="btn btn-primary me-2 btn-dark" style="font-size: 12px;" id="deleteCardButton">Delete</button>
             </div>
           </div>
           <div class="card-body">
@@ -410,199 +329,201 @@
           </div>
         </div>
       `;
-        const container = document.querySelector('.row.justify-content-center');
-        container.appendChild(newColumn);
+      const container = document.querySelector('.row.justify-content-center');
+      container.appendChild(newColumn);
 
-        new Sortable(newColumn.querySelector('.sortable'), {
-          group: 'shared',
-          animation: 150,
-          ghostClass: 'blue-background-class',
+      new Sortable(newColumn.querySelector('.sortable'), {
+        group: 'shared',
+        animation: 150,
+        ghostClass: 'blue-background-class',
+      });
+    }
+
+    // Update Card
+    $(document).on('click', '#updateCardModalUpButton', function (e) {
+      const columnId = $(e.target).closest('.card').attr('id');
+      localStorage.setItem('columnId', columnId);
+    });
+
+    $(document).on('click', '#updateCardButton', function () {
+      const cardName = $('#cardNameUpdateInput').val().trim();
+
+      const columnId = localStorage.getItem('columnId');
+      updateCard(cardName, columnId);
+      $('#updateCardModal').modal('hide');
+      $('#cardNameUpdateInput').val('');
+      localStorage.clear();
+    });
+
+    async function updateCard(cardName, columnId) {
+      await fetch(`http://localhost:8080/columns/${columnId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: getCookie(),
+        },
+        body: JSON.stringify({
+          title: cardName,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert('Card was updated successfully.');
+          location.reload();
+        })
+        .catch((error) => {
+          alert('Card update failed.');
         });
-      }
+    }
 
-      // Update Card
-      $(document).on('click', '#updateCardModalUpButton', function (e) {
+    // Create Card
+    $(document).on('click', '#createCardModalUpButton', function (e) {
+      const columnId = $(e.target).closest('.card').attr('id');
+      localStorage.setItem('columnId', columnId);
+    });
+
+    $(document).on('click', '#createCardButton', function () {
+      const cardName = $('#cardNameInput').val().trim();
+      const cardDesc = $('#cardDescInput').val().trim();
+
+      const columnId = localStorage.getItem('columnId');
+      createCard(cardName, cardDesc, columnId);
+      $('#createCardModal').modal('hide');
+      $('#cardNameInput').val('');
+      localStorage.clear();
+    });
+
+    async function editPosition(tag) {
+      const columnId = tag.parentElement.parentElement.getAttribute('id');
+      const selectCard = document.getElementById('selectCard');
+      const selectPosition = document.getElementById('selectPosition');
+
+      const option = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const result = await fetch(
+        `http://localhost:8080/columns/${columnId}`,
+        option,
+      ).then((data) => data.json());
+
+      result.cards.forEach((card) => {
+        const opCard = document.createElement('option');
+        const opPosition = document.createElement('option');
+        opCard.innerHTML = card.title;
+        opCard.setAttribute('value', card.id);
+        opPosition.innerHTML = card.cardNum;
+        opPosition.setAttribute('value', card.cardNum);
+
+        selectCard.appendChild(opCard);
+        selectPosition.appendChild(opPosition);
+      });
+    }
+
+    async function changePosition() {
+      const selectCard = document.getElementById('selectCard').value;
+      const selectPosition = document.getElementById('selectPosition').value;
+      const selectColumn = document.getElementById('selectColumn').value;
+      // console.log(selectCard);
+      // console.log(selectColumn);
+      // console.log(selectPosition);
+      const obj = {
+        newCardNum: selectPosition,
+        columnId: selectColumn,
+      };
+
+      const option = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: getCookie(),
+        },
+        body: JSON.stringify(obj),
+      };
+
+      const result = await fetch(
+        `http://localhost:8080/cards/${selectCard}`,
+        option,
+      ).then((data) => data.json());
+
+      // window.location.reload();
+    }
+
+    async function createCard(cardName, cardDesc, columnId) {
+      await fetch(`http://localhost:8080/cards`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: getCookie(),
+        },
+        body: JSON.stringify({
+          title: cardName,
+          description: cardDesc,
+          columnId: columnId,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert('Card was created successfully.');
+          location.reload();
+        })
+        .catch((error) => {
+          alert('Card creation failed.');
+        });
+    }
+
+    function getCard(column) {
+      const cardsList = document.querySelector(`#cardsList${column.id}`);
+      const columnCards = column.cards;
+
+      columnCards.forEach((card) => {
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.id = card.id;
+        listItem.style.backgroundColor = card.color;
+
+        const cardText = document.createElement('ul');
+        cardText.textContent = card.title;
+
+        listItem.appendChild(cardText);
+
+        listItem.addEventListener('click', function () {
+          window.location.href = `cardDetail.html?id=${card.id}`;
+        });
+
+        cardsList.appendChild(listItem);
+      });
+    }
+
+    // delete Card
+    $(document).on('click', '#deleteCardButton', function (e) {
+      if (confirm('정말로 삭제하시겠습니까?')) {
         const columnId = $(e.target).closest('.card').attr('id');
-        localStorage.setItem('columnId', columnId);
-      });
-
-      $(document).on('click', '#updateCardButton', function () {
-        const cardName = $('#cardNameUpdateInput').val().trim();
-
-        const columnId = localStorage.getItem('columnId');
-        updateCard(cardName, columnId);
-        $('#updateCardModal').modal('hide');
-        $('#cardNameUpdateInput').val('');
-        localStorage.clear();
-      });
-
-      async function updateCard(cardName, columnId) {
-        await fetch(`http://localhost:8080/columns/${columnId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: getCookie(),
-          },
-          body: JSON.stringify({
-            title: cardName,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            alert('Card was updated successfully.');
-            location.reload();
-          })
-          .catch((error) => {
-            alert('Card update failed.');
-          });
+        deleteCard(columnId);
       }
+    });
 
-      // Create Card
-      $(document).on('click', '#createCardModalUpButton', function (e) {
-        const columnId = $(e.target).closest('.card').attr('id');
-        localStorage.setItem('columnId', columnId);
-      });
-
-      $(document).on('click', '#createCardButton', function () {
-        const cardName = $('#cardNameInput').val().trim();
-        const cardDesc = $('#cardDescInput').val().trim();
-
-        const columnId = localStorage.getItem('columnId');
-        createCard(cardName, cardDesc, columnId);
-        $('#createCardModal').modal('hide');
-        $('#cardNameInput').val('');
-        localStorage.clear();
-      });
-
-      async function editPosition(tag) {
-        const columnId = tag.parentElement.parentElement.getAttribute('id');
-        const selectCard = document.getElementById('selectCard');
-        const selectPosition = document.getElementById('selectPosition');
-
-        const option = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
-
-        const result = await fetch(
-          `http://localhost:8080/columns/${columnId}`,
-          option,
-        ).then((data) => data.json());
-
-        result.cards.forEach((card) => {
-          const opCard = document.createElement('option');
-          const opPosition = document.createElement('option');
-          opCard.innerHTML = card.title;
-          opCard.setAttribute('value', card.id);
-          opPosition.innerHTML = card.cardNum;
-          opPosition.setAttribute('value', card.cardNum);
-
-          selectCard.appendChild(opCard);
-          selectPosition.appendChild(opPosition);
+    async function deleteCard(columnId) {
+      console.log(columnId);
+      await fetch(`http://localhost:8080/columns/${columnId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: getCookie(),
+        },
+      })
+        .then(() => {
+          alert('Column was deleted successfully.');
+          location.reload();
+        })
+        .catch((error) => {
+          alert('Column delete failed.');
         });
-      }
+    }
+  </script>
+</body>
 
-      async function changePosition() {
-        const selectCard = document.getElementById('selectCard').value;
-        const selectPosition = document.getElementById('selectPosition').value;
-        const selectColumn = document.getElementById('selectColumn').value;
-        // console.log(selectCard);
-        // console.log(selectColumn);
-        // console.log(selectPosition);
-        const obj = {
-          newCardNum: selectPosition,
-          columnId: selectColumn,
-        };
-
-        const option = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: getCookie(),
-          },
-          body: JSON.stringify(obj),
-        };
-
-        const result = await fetch(
-          `http://localhost:8080/cards/${selectCard}`,
-          option,
-        ).then((data) => data.json());
-
-        // window.location.reload();
-      }
-
-      async function createCard(cardName, cardDesc, columnId) {
-        await fetch(`http://localhost:8080/cards`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: getCookie(),
-          },
-          body: JSON.stringify({
-            title: cardName,
-            description: cardDesc,
-            columnId: columnId,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            alert('Card was created successfully.');
-            location.reload();
-          })
-          .catch((error) => {
-            alert('Card creation failed.');
-          });
-      }
-
-      function getCard(column) {
-        const cardsList = document.querySelector(`#cardsList${column.id}`);
-        const columnCards = column.cards;
-
-        columnCards.forEach((card) => {
-          const listItem = document.createElement('li');
-          listItem.className = 'list-group-item';
-          listItem.id = card.id;
-
-          const cardText = document.createElement('ul');
-          cardText.textContent = card.title;
-
-          listItem.appendChild(cardText);
-
-          listItem.addEventListener('click', function () {
-            window.location.href = `cardDetail.html?id=${card.id}`;
-          });
-
-          cardsList.appendChild(listItem);
-        });
-      }
-
-      // delete Card
-      $(document).on('click', '#deleteCardButton', function (e) {
-        if (confirm('정말로 삭제하시겠습니까?')) {
-          const columnId = $(e.target).closest('.card').attr('id');
-          deleteCard(columnId);
-        }
-      });
-
-      async function deleteCard(columnId) {
-        console.log(columnId);
-        await fetch(`http://localhost:8080/columns/${columnId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: getCookie(),
-          },
-        })
-          .then(() => {
-            alert('Column was deleted successfully.');
-            location.reload();
-          })
-          .catch((error) => {
-            alert('Column delete failed.');
-          });
-      }
-    </script>
-  </body>
 </html>
