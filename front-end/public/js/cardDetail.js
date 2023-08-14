@@ -217,20 +217,11 @@ async function goToBoardDetail() {
       'Content-Type': 'application/json',
     },
   };
-  const result1 = await fetch(
+  const result = await fetch(
     `http://localhost:8080/cards?id=${id}`,
     options1,
   ).then((res) => res.json());
-  const options2 = {
-    method: 'GET',
-    credential: 'includes',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-  const result2 = await fetch(
-    `http://localhost:8080/columns/${result1.data.columnId}`,
-    options2,
-  ).then((res) => res.json());
-  window.location.href = `http://127.0.0.1:5500/front-end/public/boardDetail.html?id=${result2.boardId}`;
+
+  const boardId = result.data.column.boardId;
+  window.location.href = `http://127.0.0.1:5500/front-end/public/boardDetail.html?id=${boardId}`;
 }

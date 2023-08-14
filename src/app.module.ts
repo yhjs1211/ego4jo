@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
@@ -35,7 +33,7 @@ import { User_Board } from './board/entity/user_board.entity';
     ColumnsModule,
     BoardModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AwsService],
+  controllers: [],
+  providers: [AwsService],
 })
 export class AppModule {}

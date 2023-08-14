@@ -13,7 +13,7 @@ export class CardRepository extends Repository<Card> {
   async findOneById(id: number): Promise<Card | null> {
     const foundCard = await this.findOne({
       where: { id },
-      relations: { comments: { user: true }, workers: true },
+      relations: { comments: { user: true }, workers: true, column: true },
     });
     return foundCard;
   }

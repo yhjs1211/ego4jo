@@ -62,9 +62,18 @@
 <li>
 <h4>Comment</h4>
 <ul>
-<li>
-<p>GET '/comments' - getCommentsByCardId</p>
-</li>
+    <li>
+        <p>GET '/comments/:cardId' - getAllCommentsByCardId</p>
+    </li>
+    <li>
+        <p>POST '/comments/:cardId' - createCommentByCardId</p>
+    </li>
+    <li>
+        <p>PUT 'comments/:commentId' - updateCommentByCommentId</p>
+    </li>
+    <li>
+        <p>DELETE 'comments/:commentId' -deleteCommentByCommentId</p>
+    </li>
 </ul>
 </li>
 <li>
