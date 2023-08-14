@@ -33,6 +33,11 @@ h3 {
   border-radius: 10px;
 }
 
+#cardBody {
+  margin: 20px;
+  padding: 20px;
+}
+
 .list-group-item {
   background: #fff;
   margin: 10px;
@@ -49,3 +54,8 @@ h3 {
   border-radius: 5px;
   cursor: pointer;
 } */
+
+.card-header {
+  font-size: 30px;
+  text-align: center;
+}

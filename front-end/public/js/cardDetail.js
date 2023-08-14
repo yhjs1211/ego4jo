@@ -18,9 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     `http://localhost:8080/cards?id=${id}`,
     options,
   ).then((res) => res.json());
-  cardTitle.innerHTML = 'Title : ' + result.data.title;
-  cardDescription.innerHTML = 'Description : ' + result.data.description;
-  cardDeadline.innerHTML = 'Deadline : ' + result.data.deadline;
+  console.log(result.data.columnId);
+  cardTitle.innerHTML = 'Title: ' + result.data.title;
+  cardDescription.innerHTML = 'Description: ' + result.data.description;
+  cardDeadline.innerHTML = 'Deadline: ' + result.data.deadline;
   card.setAttribute('style', `background-color:${result.data.color}`);
   result.data.comments.forEach((d) => {
     commentBox.innerHTML += `
@@ -63,6 +64,32 @@ async function updateCard() {
     document.getElementById('descriptionInput').value === ''
       ? undefined
       : document.getElementById('descriptionInput').value;
+  // const deadlineInput =
+  //   document.getElementById('deadlineInput').value === ''
+  //     ? undefined
+  //     : document.getElementById('deadlineInput').value;
+
+  if (!titleInput && !descriptionInput && !deadlineInput) {
+    alert('변경할 데이터가 없습니다.');
+  } else {
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify({
+        title: titleInput,
+        description: descriptionInput,
+        // deadline: deadlineInput,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    await fetch(`http://localhost:8080/cards/${id}`, options);
+    window.location.reload();
+  }
+}
+
+async function updateCardDeadline() {
   const deadlineInput =
     document.getElementById('deadlineInput').value === ''
       ? undefined
@@ -74,8 +101,6 @@ async function updateCard() {
     const options = {
       method: 'PUT',
       body: JSON.stringify({
-        title: titleInput,
-        description: descriptionInput,
         deadline: deadlineInput,
       }),
       headers: {
@@ -182,4 +207,30 @@ function getCookie() {
   const cookie = decodeURIComponent(document.cookie);
   const token = cookie.split('=')[1];
   return token;
+}
+
+async function goToBoardDetail() {
+  const options1 = {
+    method: 'GET',
+    credential: 'includes',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const result1 = await fetch(
+    `http://localhost:8080/cards?id=${id}`,
+    options1,
+  ).then((res) => res.json());
+  const options2 = {
+    method: 'GET',
+    credential: 'includes',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const result2 = await fetch(
+    `http://localhost:8080/columns/${result1.data.columnId}`,
+    options2,
+  ).then((res) => res.json());
+  window.location.href = `http://127.0.0.1:5500/front-end/public/boardDetail.html?id=${result2.boardId}`;
 }
