@@ -67,4 +67,53 @@
 </li>
 </ul>
 </li>
+<li>
+<h4>Board</h4>
+<ul>
+<li>
+<p>GET '/boards/createdBoards' - getCreatedBoards</p>
+</li>
+<li>
+<p>POST '/boards' - createBoard</p>
+</li>
+<li>
+<p>PUT '/boards/:boardId' - updateBoard</p>
+</li>
+<li>
+<p>DELETE '/boards/:boardId' - deleteBoard</p>
+</li>
+<li>
+<p>POST '/boards/invite/:boardId' - inviteUser</p>
+</li>
+<li>
+<p>GET '/boards/invitedBoards' - getInvitedBoards</p>
+</li>
+<li>
+<p>GET '/boards/detail/:id' - getBoardDetail</p>
+</li>
+<li>
+<p>DELETE '/boards/invitedBoards/:boardId' - deleteInvitedBoard</p>
+</li>
+</ul>
+</li>
+<li>
+<h4>Column</h4>
+<ul>
+<li>
+<p>GET '/columns' - getColumns</p>
+</li>
+<li>
+<p>GET '/columns/:id' - getColumnDetailById</p>
+</li>
+<li>
+<p>POST '/columns' - createColumns</p>
+</li>
+<li>
+<p>PUT '/columns/:id' - updateColumns</p>
+</li>
+<li>
+<p>DELETE '/columns/:id' - deleteCard</p>
+</li>
+</ul>
+</li>
 </ul>
